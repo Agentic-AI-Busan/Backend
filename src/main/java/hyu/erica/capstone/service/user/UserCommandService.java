@@ -1,0 +1,16 @@
+package hyu.erica.capstone.service.user;
+
+import hyu.erica.capstone.web.dto.user.request.SignInRequestDTO;
+import hyu.erica.capstone.web.dto.user.request.SignUpRequestDTO;
+import hyu.erica.capstone.web.dto.user.request.UpdateInfoRequestDTO;
+
+public interface UserCommandService {
+
+    Long signUp(SignUpRequestDTO request);
+
+    void signIn(SignInRequestDTO request);
+
+    void updateInfo(Long userId, UpdateInfoRequestDTO request);
+
+    void reissueToken(String refreshToken);
+}

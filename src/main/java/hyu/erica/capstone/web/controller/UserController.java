@@ -1,11 +1,14 @@
 package hyu.erica.capstone.web.controller;
 
 import hyu.erica.capstone.api.ApiResponse;
+import hyu.erica.capstone.api.code.status.SuccessStatus;
+import hyu.erica.capstone.service.user.UserCommandService;
 import hyu.erica.capstone.web.dto.user.request.SignInRequestDTO;
 import hyu.erica.capstone.web.dto.user.request.SignUpRequestDTO;
 import hyu.erica.capstone.web.dto.user.request.UpdateInfoRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/users")
+@RequiredArgsConstructor
 public class UserController {
+
+    private final UserCommandService userCommandService;
 
     // 회원 가입
     @Operation(summary = "회원 가입", description = """
@@ -35,7 +41,7 @@ public class UserController {
     public ApiResponse<?> signUp(
             @RequestBody SignUpRequestDTO request
             ) {
-        return null;
+        return ApiResponse.onSuccess(SuccessStatus._OK, userCommandService.signUp(request));
     }
 
     // 로그인
@@ -95,6 +101,7 @@ public class UserController {
     public ApiResponse<?> editProfile(
             @RequestBody UpdateInfoRequestDTO request
             ) {
-        return null;
+        userCommandService.updateInfo(1L, request);
+        return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 }
