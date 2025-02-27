@@ -1,4 +1,4 @@
-package hyu.erica.capstone.controller;
+package hyu.erica.capstone.web.controller;
 
 
 import hyu.erica.capstone.api.ApiResponse;

@@ -1,4 +1,4 @@
-package hyu.erica.capstone.controller;
+package hyu.erica.capstone.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.GetMapping;
