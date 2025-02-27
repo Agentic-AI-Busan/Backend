@@ -30,6 +30,7 @@ public class SwaggerConfig {
                         .bearerFormat("JWT"));
 
         return new OpenAPI()
+                .openapi("3.0.1")  // 🔥 OpenAPI 버전 명시 추가!
                 .addServersItem(new Server().url("/"))
                 .info(info)
                 .addSecurityItem(securityRequirement)
