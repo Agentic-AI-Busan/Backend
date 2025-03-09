@@ -38,6 +38,10 @@ public class UserController {
             - phoneNumber: 전화번호
             - birthDate: 생년월일
             - phoneService: 통신사
+            - termsOfService: 서비스 이용 약관 동의 여부
+            - privacyPolicy: 개인정보 처리 방침 동의 여부
+            - marketingAgreement: 마케팅 정보 수신 동의 여부
+            
                   """)
     @PostMapping("/sign-up")
     public ApiResponse<?> signUp(
