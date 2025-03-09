@@ -56,6 +56,11 @@ public class UserCommandServiceImpl implements UserCommandService {
     }
 
     @Override
+    public boolean checkEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @Override
     public void updateInfo(Long userId, UpdateInfoRequestDTO request) {
         User user = userRepository.findById(userId).orElseThrow(() -> new GeneralException(ErrorStatus._USER_NOT_FOUND));
 
