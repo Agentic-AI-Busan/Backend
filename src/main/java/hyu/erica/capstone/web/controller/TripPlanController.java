@@ -21,13 +21,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
+@Tag(name = "[개발 전] 여행", description = "여행 관련 API")
 @CrossOrigin
 @RestController
 @RequestMapping("/api/trip-plans/{tripPlansId}")
 public class TripPlanController {
 
     // 여행 기간 입력
-    @Tag(name = "Trip", description = "여행 관련 API")
+    @Tag(name = "[개발 전] Trip", description = "여행 관련 API")
     @Operation(summary = "여행 기간 입력", description = """
             ### 여행 기간을 입력합니다.
             
@@ -48,7 +49,7 @@ public class TripPlanController {
         return null;
     }
 
-    @Tag(name = "Trip", description = "여행 관련 API")
+    @Tag(name = "[개발 전] Trip", description = "여행 관련 API")
     @Operation(summary = "여행 기간 조회", description = """
             ### 여행 기간을 조회합니다.
             
@@ -63,7 +64,7 @@ public class TripPlanController {
     }
 
     // 선호 활동 입력
-    @Tag(name = "Trip", description = "여행 관련 API")
+    @Tag(name = "[개발 전] Trip", description = "여행 관련 API")
     @Operation(summary = "선호 활동 입력", description = """
             ### 선호 활동을 입력합니다.
             
@@ -81,7 +82,7 @@ public class TripPlanController {
         return null;
     }
 
-    @Tag(name = "Trip", description = "여행 관련 API")
+    @Tag(name = "[개발 전] Trip", description = "여행 관련 API")
     @Operation(summary = "선호 활동 조회", description = """
             ### 선호 활동을 조회합니다.
             
@@ -96,7 +97,7 @@ public class TripPlanController {
     }
 
     // 추가적인 요구 사항 입력
-    @Tag(name = "Trip", description = "여행 관련 API")
+    @Tag(name = "[개발 전] Trip", description = "여행 관련 API")
     @Operation(summary = "추가적인 요구 사항 입력", description = """
             ### 추가적인 요구 사항을 입력합니다.
             
@@ -114,7 +115,7 @@ public class TripPlanController {
         return null;
     }
 
-    @Tag(name = "Trip", description = "여행 관련 API")
+    @Tag(name = "[개발 전] Trip", description = "여행 관련 API")
     @Operation(summary = "추가적인 요구 사항 조회", description = """
             ### 추가적인 요구 사항을 조회합니다.
             
@@ -128,7 +129,7 @@ public class TripPlanController {
         return null;
     }
 
-    @Tag(name = "Trip", description = "여행 관련 API")
+    @Tag(name = "[개발 전] Trip", description = "여행 관련 API")
     @Operation(summary = "일정 제공", description = """
             ### 최종적으로 입력한 정보를 바탕으로 일정을 제공합니다.
             
@@ -146,7 +147,7 @@ public class TripPlanController {
     /* ------------------------------------------------------------------------------------------------------ */
 
     // 선택지 확인 (여행지)
-    @Tag(name = "선택지 확인", description = "선택지 확인 API")
+    @Tag(name = "[개발 전] 선택지 확인", description = "선택지 확인 API")
     @Operation(summary = "선택지 (여행지) 확인", description = """
             ### 선택지 확인 API
             
@@ -161,7 +162,7 @@ public class TripPlanController {
     }
 
     // 선택지 상세 보기 (여행지)
-    @Tag(name = "선택지 확인", description = "선택지 확인 API")
+    @Tag(name = "[개발 전] 선택지 확인", description = "선택지 확인 API")
     @Operation(summary = "선택지 (여행지) 상세 보기", description = """
             ### 선택지 상세 보기 API
             
@@ -178,7 +179,7 @@ public class TripPlanController {
     }
 
     // 여행지 키워드 검색
-    @Tag(name = "선택지 확인", description = "선택지 확인 API")
+    @Tag(name = "[개발 전] 선택지 확인", description = "선택지 확인 API")
     @Operation(summary = "여행지 키워드 검색", description = """
             ### 여행지 키워드 검색 API
             
@@ -197,7 +198,7 @@ public class TripPlanController {
     }
 
     // 여행지 최종 선택
-    @Tag(name = "선택지 확인", description = "선택지 확인 API")
+    @Tag(name = "[개발 전] 선택지 확인", description = "선택지 확인 API")
     @Operation(summary = "여행지 최종 선택", description = """
             ### 여행지 최종 선택 API
             
@@ -214,7 +215,7 @@ public class TripPlanController {
     }
 
     // 선택지 확인 (음식점)
-    @Tag(name = "선택지 확인", description = "선택지 확인 API")
+    @Tag(name = "[개발 전] 선택지 확인", description = "선택지 확인 API")
     @Operation(summary = "선택지 (음식점) 확인", description = """
             ### 선택지 확인 API
             
@@ -230,7 +231,7 @@ public class TripPlanController {
 
 
     // 선택지 상세 보기 (음식점)
-    @Tag(name = "선택지 확인", description = "선택지 확인 API")
+    @Tag(name = "[개발 전] 선택지 확인", description = "선택지 확인 API")
     @Operation(summary = "선택지 (음식점) 상세 보기", description = """
             ### 선택지 상세 보기 API
             
@@ -248,7 +249,7 @@ public class TripPlanController {
 
 
     // 음식점 키워드 검색
-    @Tag(name = "선택지 확인", description = "선택지 확인 API")
+    @Tag(name = "[개발 전] 선택지 확인", description = "선택지 확인 API")
     @Operation(summary = "음식점 키워드 검색", description = """
             ### 음식점 키워드 검색 API
             
@@ -268,7 +269,7 @@ public class TripPlanController {
 
 
     // 음식점 최종 선택
-    @Tag(name = "선택지 확인", description = "선택지 확인 API")
+    @Tag(name = "[개발 전] 선택지 확인", description = "선택지 확인 API")
     @Operation(summary = "음식점 최종 선택", description = """
             ### 음식점 최종 선택 API
             
