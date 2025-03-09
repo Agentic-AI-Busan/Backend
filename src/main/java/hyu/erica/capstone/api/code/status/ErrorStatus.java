@@ -34,6 +34,10 @@ public enum ErrorStatus implements BaseErrorCode {
     _INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "USER4001", "비밀번호가 일치하지 않습니다."),
     _DUPLICATED_EMAIL(HttpStatus.BAD_REQUEST, "USER4002", "이미 가입된 이메일입니다."),
 
+    // 여행 취향 관련
+    _STYLE_NOT_FOUND(HttpStatus.NOT_FOUND, "STYLE4040", "입력하신 여행 스타일을 찾을 수 없습니다."),
+    _UNAUTHORIZED_USER(HttpStatus.FORBIDDEN, "STYLE4001", "해당 사용자는 권한이 없습니다."),
+
     ;
 
 
