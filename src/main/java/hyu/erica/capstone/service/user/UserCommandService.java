@@ -8,7 +8,7 @@ public interface UserCommandService {
 
     Long signUp(SignUpRequestDTO request);
 
-    void signIn(SignInRequestDTO request);
+    String signIn(SignInRequestDTO request);
 
     void updateInfo(Long userId, UpdateInfoRequestDTO request);
 
