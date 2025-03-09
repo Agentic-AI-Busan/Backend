@@ -31,6 +31,7 @@ public enum ErrorStatus implements BaseErrorCode {
 
     //유저 에러
     _USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER4040", "사용자를 찾을 수 없습니다."),
+    _INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "USER4001", "비밀번호가 일치하지 않습니다."),
 
     ;
 
