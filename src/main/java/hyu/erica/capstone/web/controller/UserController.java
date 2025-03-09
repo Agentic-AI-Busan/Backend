@@ -9,6 +9,7 @@ import hyu.erica.capstone.web.dto.user.request.SignUpRequestDTO;
 import hyu.erica.capstone.web.dto.user.request.UpdateInfoRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,15 +63,16 @@ public class UserController {
 
     // 로그인
     @Operation(summary = "[로그인]", description = """
-            ### 로그인을 진행합니다.
+            ### 로그인을 진행합니다. 로그인 성공 시 access-token을 헤더에 포함하여 반환합니다.
             
             ### Request Body
             - email: 이메일
             - password: 비밀번호
             """)
     @PostMapping("/login")
-    public ApiResponse<?> login(@RequestBody SignInRequestDTO request) {
-        return ApiResponse.onSuccess(SuccessStatus._OK,  userCommandService.signIn(request));
+    public ApiResponse<?> login(@RequestBody SignInRequestDTO request, HttpServletResponse response) {
+        response.setHeader("Authorization", userCommandService.signIn(request));
+        return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 
     // 토큰 재발급
