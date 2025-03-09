@@ -50,6 +50,15 @@ public class User extends BaseEntity {
 
     private String phoneNumber;
 
+    // 약관
+    private boolean termsOfService;
+
+    // 개인 정보 동의
+    private boolean privacyPolicy;
+
+    // 마케팅 수신 동의
+    private boolean marketingAgreement;
+
     @Enumerated(value = STRING)
     private ThirdPartyLogin thirdPartyLogin;
 

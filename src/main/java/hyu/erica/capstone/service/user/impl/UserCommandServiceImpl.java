@@ -35,6 +35,10 @@ public class UserCommandServiceImpl implements UserCommandService {
                 .password(request.password())
                 .birthday(request.birthDate())
                 .phoneService(request.phoneService())
+                .phoneNumber(request.phoneNumber())
+                .termsOfService(request.termsOfService())
+                .privacyPolicy(request.privacyPolicy())
+                .marketingAgreement(request.marketingAgreement())
                 .build();
 
         User save = userRepository.save(user);
@@ -53,6 +57,11 @@ public class UserCommandServiceImpl implements UserCommandService {
         else {
             throw new GeneralException(ErrorStatus._INVALID_PASSWORD);
         }
+    }
+
+    @Override
+    public boolean checkEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 
     @Override

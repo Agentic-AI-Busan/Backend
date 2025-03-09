@@ -10,6 +10,8 @@ public interface UserCommandService {
 
     String signIn(SignInRequestDTO request);
 
+    boolean checkEmail(String email);
+
     void updateInfo(Long userId, UpdateInfoRequestDTO request);
 
     void reissueToken(String refreshToken);
