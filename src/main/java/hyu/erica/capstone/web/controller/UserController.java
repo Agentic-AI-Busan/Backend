@@ -1,13 +1,18 @@
 package hyu.erica.capstone.web.controller;
 
 import hyu.erica.capstone.api.ApiResponse;
+import hyu.erica.capstone.api.code.status.SuccessStatus;
+import hyu.erica.capstone.security.utils.SecurityUtils;
+import hyu.erica.capstone.service.user.UserCommandService;
 import hyu.erica.capstone.web.dto.user.request.SignInRequestDTO;
 import hyu.erica.capstone.web.dto.user.request.SignUpRequestDTO;
 import hyu.erica.capstone.web.dto.user.request.UpdateInfoRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/users")
+@RequiredArgsConstructor
 public class UserController {
+
+    private final UserCommandService userCommandService;
 
     // 회원 가입
     @Operation(summary = "회원 가입", description = """
@@ -35,7 +43,7 @@ public class UserController {
     public ApiResponse<?> signUp(
             @RequestBody SignUpRequestDTO request
             ) {
-        return null;
+        return ApiResponse.onSuccess(SuccessStatus._OK, userCommandService.signUp(request));
     }
 
     // 로그인
@@ -48,7 +56,7 @@ public class UserController {
             """)
     @PostMapping("/login")
     public ApiResponse<?> login(@RequestBody SignInRequestDTO request) {
-        return null;
+        return ApiResponse.onSuccess(SuccessStatus._OK,  userCommandService.signIn(request));
     }
 
     // 토큰 재발급
@@ -63,14 +71,6 @@ public class UserController {
         return null;
     }
 
-    // 로그아웃
-    @Operation(summary = "로그아웃", description = """
-            ### 로그아웃을 진행합니다.
-            """)
-    @PostMapping("/logout")
-    public ApiResponse<?> logout() {
-        return null;
-    }
 
     // 마이페이지
     @Operation(summary = "마이페이지", description = """
@@ -78,7 +78,7 @@ public class UserController {
             """)
     @GetMapping("/my-page")
     public ApiResponse<?> myPage() {
-        return null;
+        return ApiResponse.onSuccess(SuccessStatus._OK, SecurityUtils.getCurrentUserId());
     }
 
 
@@ -95,6 +95,17 @@ public class UserController {
     public ApiResponse<?> editProfile(
             @RequestBody UpdateInfoRequestDTO request
             ) {
-        return null;
+        userCommandService.updateInfo(1L, request);
+        return ApiResponse.onSuccess(SuccessStatus._OK);
     }
+
+
+//    // 로그아웃
+//    @Operation(summary = "로그아웃", description = """
+//            ### 로그아웃을 진행합니다.
+//            """)
+//    @PostMapping("/logout")
+//    public ApiResponse<?> logout() {
+//        return null;
+//    }
 }

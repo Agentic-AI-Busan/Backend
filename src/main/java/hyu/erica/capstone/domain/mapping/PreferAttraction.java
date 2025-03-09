@@ -40,4 +40,6 @@ public class PreferAttraction extends BaseEntity {
 
     private boolean isPrefer;
 
+    // 메모
+
 }

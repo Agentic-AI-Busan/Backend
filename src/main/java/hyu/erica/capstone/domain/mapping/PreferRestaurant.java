@@ -39,4 +39,6 @@ public class PreferRestaurant extends BaseEntity {
     private User user;
 
     private boolean isPrefer;
+
+    // 메모
 }
