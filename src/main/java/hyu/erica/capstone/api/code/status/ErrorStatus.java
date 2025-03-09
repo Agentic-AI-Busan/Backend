@@ -29,6 +29,14 @@ public enum ErrorStatus implements BaseErrorCode {
     _MEMBER_EMAIL_EXIST(HttpStatus.BAD_REQUEST, "COMMON4014", "이미 가입 된 이메일입니다. 다른 로그인 방식을 이용해주세요."),
     _RSA_ERROR(HttpStatus.BAD_REQUEST, "COMMON4015", "RSA 에러가 발생했습니다."),
 
+    //유저 에러
+    _USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER4040", "사용자를 찾을 수 없습니다."),
+    _INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "USER4001", "비밀번호가 일치하지 않습니다."),
+    _DUPLICATED_EMAIL(HttpStatus.BAD_REQUEST, "USER4002", "이미 가입된 이메일입니다."),
+
+    // 여행 취향 관련
+    _STYLE_NOT_FOUND(HttpStatus.NOT_FOUND, "STYLE4040", "입력하신 여행 스타일을 찾을 수 없습니다."),
+    _UNAUTHORIZED_USER(HttpStatus.FORBIDDEN, "STYLE4001", "해당 사용자는 권한이 없습니다."),
 
     ;
 

@@ -25,7 +25,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class TravelPlan {
+public class Style {
 
     @Id @GeneratedValue(strategy = IDENTITY)
     private Long id;
@@ -43,4 +43,11 @@ public class TravelPlan {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public void updateStyle( LocalDateTime startDate, LocalDateTime endDate, String preferActivity, String requirement) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.preferActivity = preferActivity;
+        this.requirement = requirement;
+    }
 }

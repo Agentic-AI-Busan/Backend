@@ -1,10 +1,14 @@
 package hyu.erica.capstone.domain;
 
 
+import static jakarta.persistence.EnumType.*;
+
 import hyu.erica.capstone.domain.base.BaseEntity;
 import hyu.erica.capstone.domain.enums.Gender;
+import hyu.erica.capstone.domain.enums.PhoneService;
 import hyu.erica.capstone.domain.enums.ThirdPartyLogin;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -44,6 +48,26 @@ public class User extends BaseEntity {
 
     private String profileImage;
 
+    private String phoneNumber;
+
+    // 약관
+    private boolean termsOfService;
+
+    // 개인 정보 동의
+    private boolean privacyPolicy;
+
+    // 마케팅 수신 동의
+    private boolean marketingAgreement;
+
+    @Enumerated(value = STRING)
     private ThirdPartyLogin thirdPartyLogin;
 
+    @Enumerated(value = STRING)
+    private PhoneService phoneService;
+
+    public void updateInfo(String nickname, String phoneNumber, String profileImage) {
+        this.nickname = nickname;
+        this.phoneNumber = phoneNumber;
+        this.profileImage = profileImage;
+    }
 }

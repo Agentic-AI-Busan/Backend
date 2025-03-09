@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Plan", description = "여행 계획 관련 API")
+@Tag(name = "[개발 전] 여행 계획", description = "여행 계획 관련 API")
 @CrossOrigin
 @RestController
 @RequestMapping("/api/plans")
