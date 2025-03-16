@@ -1,4 +1,4 @@
-package hyu.erica.capstone.service.style;
+package hyu.erica.capstone.service.style.impl;
 
 import hyu.erica.capstone.api.code.status.ErrorStatus;
 import hyu.erica.capstone.api.exception.GeneralException;
@@ -14,7 +14,7 @@ import hyu.erica.capstone.repository.PreferRestaurantRepository;
 import hyu.erica.capstone.repository.RestaurantRepository;
 import hyu.erica.capstone.repository.StyleRepository;
 import hyu.erica.capstone.repository.UserRepository;
-import hyu.erica.capstone.web.dto.client.AttractionRequestDTO;
+import hyu.erica.capstone.service.style.StyleCommandService;
 import hyu.erica.capstone.web.dto.client.RestaurantRequestDTO;
 import hyu.erica.capstone.web.dto.style.request.UserStyleRequestDTO;
 import hyu.erica.capstone.web.dto.style.response.UserStyleFinalResponseDTO;
@@ -85,16 +85,16 @@ public class StyleCommandServiceImpl implements StyleCommandService {
 
         // TODO 매핑 테이블에 데이터 저장하기
 
-        List<Long> restaurantIds = restaurants.restaurant_ids();
-
-        for (Long restaurantId : restaurantIds) {
-            Restaurant restaurant =  restaurantRepository.findById(restaurantId).orElseThrow(
-                    () -> new GeneralException(ErrorStatus._RESTAURANT_NOT_FOUND));
-            preferRestaurantRepository.save(PreferRestaurant.builder()
-                    .restaurant(restaurant)
-                    .user(user)
-                    .build());
-        }
+//        List<Long> restaurantIds = restaurants.restaurant_ids();
+//
+//        for (Long restaurantId : restaurantIds) {
+//            Restaurant restaurant =  restaurantRepository.findById(restaurantId).orElseThrow(
+//                    () -> new GeneralException(ErrorStatus._RESTAURANT_NOT_FOUND));
+//            preferRestaurantRepository.save(PreferRestaurant.builder()
+//                    .restaurant(restaurant)
+//                    .user(user)
+//                    .build());
+//        }
 
 //        List<Long> attractionIds = attractions.attraction_ids();
 //        for (Long attractionId : attractionIds) {
