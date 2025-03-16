@@ -1,4 +1,4 @@
-package hyu.erica.capstone.service.style;
+package hyu.erica.capstone.service.style.impl;
 
 import hyu.erica.capstone.api.code.status.ErrorStatus;
 import hyu.erica.capstone.api.exception.GeneralException;
@@ -6,6 +6,7 @@ import hyu.erica.capstone.domain.Style;
 import hyu.erica.capstone.domain.User;
 import hyu.erica.capstone.repository.StyleRepository;
 import hyu.erica.capstone.repository.UserRepository;
+import hyu.erica.capstone.service.style.StyleQueryService;
 import hyu.erica.capstone.web.dto.style.response.UserStyleResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

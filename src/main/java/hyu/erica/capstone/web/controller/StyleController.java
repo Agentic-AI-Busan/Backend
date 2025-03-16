@@ -36,7 +36,7 @@ public class StyleController {
             - name : 회원 이름
             - styleId : 스타일 ID (해당 스타일 ID로 선호 여행 스타일을 조회, 수정할 수 있습니다.)
             """)
-    @GetMapping("/")
+    @GetMapping("")
     public ApiResponse<?> getUserPlanStyle() {
         return ApiResponse.of(SuccessStatus._OK, styleCommandService.initStyle(SecurityUtils.getCurrentUserId()));
     }
@@ -75,6 +75,19 @@ public class StyleController {
     public ApiResponse<?> getUserPlanStyle(@PathVariable Long styleId) {
 
         return ApiResponse.of(SuccessStatus._OK, styleQueryService.getStyle(styleId, SecurityUtils.getCurrentUserId()));
+    }
+
+    @Operation(summary = "[선호 여행 스타일 최종 제출]", description = """
+            ### 선호 여행 스타일을 최종 제출합니다. \n
+            styleId를 통해 특정 선호 여행 스타일을 최종 제출할 수 있습니다. \n
+            
+            ### Response Body
+            - restaurantIds: 추천 식당 ID 리스트
+            - attractionIds: 추천 관광지 ID 리스트
+            """)
+    @PostMapping("/{styleId}/final")
+    public ApiResponse<?> saveFinalUserPlanStyle(@PathVariable Long styleId) {
+        return ApiResponse.onSuccess(SuccessStatus._OK, styleCommandService.submitStyle(styleId, SecurityUtils.getCurrentUserId()));
     }
 
 
