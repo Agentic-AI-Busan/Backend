@@ -61,7 +61,7 @@ public class Attraction {
     @Column(name = "HOMEPAGE_URL")
     private String homepageUrl;
 
-    @Column(name = "TRFC_INFO")
+    @Column(name = "TRFC_INFO", columnDefinition = "TEXT")
     private String trfcInfo;
 
     @Column(name = "USAGE_DAY")
@@ -70,7 +70,7 @@ public class Attraction {
     @Column(name = "HLDY_INFO")
     private String hldyInfo;
 
-    @Column(name = "USAGE_DAY_WEEK_AND_TIME")
+    @Column(name = "USAGE_DAY_WEEK_AND_TIME", columnDefinition = "TEXT")
     private String usageDayWeekAndTime;
 
     @Column(name = "USAGE_AMOUNT")
