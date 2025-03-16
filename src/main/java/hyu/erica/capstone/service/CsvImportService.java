@@ -5,7 +5,9 @@ import static java.lang.Double.parseDouble;
 import hyu.erica.capstone.api.code.status.ErrorStatus;
 import hyu.erica.capstone.api.exception.GeneralException;
 import hyu.erica.capstone.domain.Attraction;
+import hyu.erica.capstone.domain.Restaurant;
 import hyu.erica.capstone.repository.AttractionRepository;
+import hyu.erica.capstone.repository.RestaurantRepository;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -25,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class CsvImportService {
 
     private final AttractionRepository attractionRepository;
+    private final RestaurantRepository restaurantRepository;
 
 
     public void importAttraction(MultipartFile file) {
@@ -63,6 +66,35 @@ public class CsvImportService {
             attractionRepository.saveAll(touristSpots);
         } catch (Exception e) {
             e.printStackTrace();
+            throw new GeneralException(ErrorStatus._FILE_INPUT_ERROR);
+        }
+    }
+
+    public void importRestaurant(MultipartFile file) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8));
+             CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader())) {
+
+            List<Restaurant> batchList = new ArrayList<>();
+
+            for (CSVRecord record : csvParser) {
+                Restaurant restaurant = Restaurant.builder()
+                        .rstrId(Long.parseLong(record.get("RSTR_ID")))
+                        .rstrNm(record.get("RSTR_NM"))
+                        .rstrRdnmAdr(record.get("RSTR_RDNMADR"))
+                        .rstrLnnoAdres(record.get("RSTR_LNNO_ADRES"))
+                        .rstrLa(parseDouble(record.get("RSTR_LA")))
+                        .rstrLo(parseDouble(record.get("RSTR_LO")))
+                        .rstrTelNo(record.get("RSTR_TELNO"))
+                        .bsnsStatmBzcndNm(record.get("BSNS_STATM_BZCND_NM"))
+                        .bsnsLcncNm(record.get("BSNS_LCNC_NM"))
+                        .rstrIntrcnCont(record.get("RSTR_INTRCN_CONT"))
+                        .build();
+                batchList.add(restaurant);
+            }
+
+            restaurantRepository.saveAll(batchList);
+
+        } catch (Exception e) {
             throw new GeneralException(ErrorStatus._FILE_INPUT_ERROR);
         }
     }

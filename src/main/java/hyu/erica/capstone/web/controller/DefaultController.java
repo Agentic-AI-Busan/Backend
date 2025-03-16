@@ -39,4 +39,19 @@ public class DefaultController {
         importService.importAttraction(file);
         return ApiResponse.onSuccess(SuccessStatus._OK);
     }
+
+    @Operation(summary = "[서버 개발 용] 식당 파일 업로드", description = """
+            ### 식당 파일을 업로드합니다.
+            
+            ### Request Body
+            - file: 식당 파일
+            
+            """)
+    @PostMapping("/upload/restaurants")
+    public ApiResponse<?> uploadRestaurantFile(@RequestParam MultipartFile file) {
+        importService.importRestaurant(file);
+        return ApiResponse.onSuccess(SuccessStatus._OK);
+    }
+
+
 }
