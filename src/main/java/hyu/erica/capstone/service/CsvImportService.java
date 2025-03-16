@@ -1,4 +1,4 @@
-package hyu.erica.capstone.web;
+package hyu.erica.capstone.service;
 
 import static java.lang.Double.parseDouble;
 
