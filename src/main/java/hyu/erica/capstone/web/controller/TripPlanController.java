@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
-@Tag(name = "[개발 전] 여행", description = "여행 관련 API")
 @CrossOrigin
 @RestController
 @RequestMapping("/api/trip-plans/{tripPlansId}")
