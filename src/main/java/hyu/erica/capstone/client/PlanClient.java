@@ -1,5 +1,7 @@
 package hyu.erica.capstone.client;
 
+import hyu.erica.capstone.web.dto.client.AttractionRequestDTO;
+import hyu.erica.capstone.web.dto.client.RestaurantRequestDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -8,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface PlanClient {
 
     @GetMapping("/restaurants/search")
-    String getRestaurants(@RequestParam String query);
+    RestaurantRequestDTO getRestaurants(@RequestParam String query);
 
     @GetMapping("/attractions/search")
-    String getAttractions(@RequestParam String query);
+    AttractionRequestDTO getAttractions(@RequestParam String query);
 }
