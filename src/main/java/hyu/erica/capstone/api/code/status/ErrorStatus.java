@@ -41,6 +41,9 @@ public enum ErrorStatus implements BaseErrorCode {
     _STYLE_NOT_FOUND(HttpStatus.NOT_FOUND, "STYLE4040", "입력하신 여행 스타일을 찾을 수 없습니다."),
     _UNAUTHORIZED_USER(HttpStatus.FORBIDDEN, "STYLE4001", "해당 사용자는 권한이 없습니다."),
 
+    // 식당 관련
+    _RESTAURANT_NOT_FOUND(HttpStatus.NOT_FOUND, "RESTAURANT4040", "입력하신 식당을 찾을 수 없습니다."),
+
     ;
 
 

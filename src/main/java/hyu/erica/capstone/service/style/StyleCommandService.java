@@ -11,5 +11,5 @@ public interface StyleCommandService {
 
     UserStyleResponseDTO updateStyle(Long userId, Long styleId, UserStyleRequestDTO request);
 
-    UserStyleFinalResponseDTO submitStyle(Long styleId);
+    UserStyleFinalResponseDTO submitStyle(Long styleId, Long userId);
 }

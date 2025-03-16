@@ -87,7 +87,7 @@ public class StyleController {
             """)
     @PostMapping("/{styleId}/final")
     public ApiResponse<?> saveFinalUserPlanStyle(@PathVariable Long styleId) {
-        return ApiResponse.onSuccess(SuccessStatus._OK, styleCommandService.submitStyle(styleId));
+        return ApiResponse.onSuccess(SuccessStatus._OK, styleCommandService.submitStyle(styleId, SecurityUtils.getCurrentUserId()));
     }
 
 

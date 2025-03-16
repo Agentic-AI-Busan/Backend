@@ -3,9 +3,11 @@ package hyu.erica.capstone.service.style;
 import hyu.erica.capstone.api.code.status.ErrorStatus;
 import hyu.erica.capstone.api.exception.GeneralException;
 import hyu.erica.capstone.client.PlanClient;
+import hyu.erica.capstone.domain.Restaurant;
 import hyu.erica.capstone.domain.Style;
 import hyu.erica.capstone.domain.User;
 import hyu.erica.capstone.domain.enums.City;
+import hyu.erica.capstone.domain.mapping.PreferRestaurant;
 import hyu.erica.capstone.repository.AttractionRepository;
 import hyu.erica.capstone.repository.PreferAttractionRepository;
 import hyu.erica.capstone.repository.PreferRestaurantRepository;
@@ -67,9 +69,9 @@ public class StyleCommandServiceImpl implements StyleCommandService {
     }
 
     @Override
-    public UserStyleFinalResponseDTO submitStyle(Long styleId) {
+    public UserStyleFinalResponseDTO submitStyle(Long styleId, Long userId) {
         Style style = styleRepository.findById(styleId).orElseThrow( () -> new GeneralException(ErrorStatus._STYLE_NOT_FOUND));
-
+        User user = userRepository.findById(userId).orElseThrow( () -> new GeneralException(ErrorStatus._USER_NOT_FOUND));
 
         StringBuilder sb = new StringBuilder();
         sb.append("여행 지역 : ").append(style.getCity().name()).append("\n")
@@ -77,16 +79,32 @@ public class StyleCommandServiceImpl implements StyleCommandService {
                 .append("종료 날짜 : ").append(style.getEndDate()).append("\n")
                 .append("선호 활동 : ").append(style.getPreferActivity()).append("\n")
                 .append("추가 요구 사항 : ").append(style.getRequirement());
-
-        //AttractionRequestDTO attractions = planClient.getAttractions(sb.toString());
+//
+//        AttractionRequestDTO attractions = planClient.getAttractions(sb.toString());
         RestaurantRequestDTO restaurants = planClient.getRestaurants(sb.toString());
 
         // TODO 매핑 테이블에 데이터 저장하기
 
         List<Long> restaurantIds = restaurants.restaurant_ids();
 
+        for (Long restaurantId : restaurantIds) {
+            Restaurant restaurant =  restaurantRepository.findById(restaurantId).orElseThrow(
+                    () -> new GeneralException(ErrorStatus._RESTAURANT_NOT_FOUND));
+            preferRestaurantRepository.save(PreferRestaurant.builder()
+                    .restaurant(restaurant)
+                    .user(user)
+                    .build());
+        }
 
-
+//        List<Long> attractionIds = attractions.attraction_ids();
+//        for (Long attractionId : attractionIds) {
+//            Attraction attraction = attractionRepository.findById(attractionId).orElseThrow(
+//                    () -> new GeneralException(ErrorStatus._ATTRACTION_NOT_FOUND));
+//            preferAttractionRepository.save(PreferAttraction.builder()
+//                    .attraction(attraction)
+//                    .user(user)
+//                    .build());
+//        }
 
         return UserStyleFinalResponseDTO.of(restaurants.restaurant_ids(), List.of());
     }
