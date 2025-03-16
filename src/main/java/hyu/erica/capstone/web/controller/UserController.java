@@ -29,7 +29,7 @@ public class UserController {
     private final UserCommandService userCommandService;
 
     // 회원 가입
-    @Operation(summary = "[회원 가입]", description = """
+    @Operation(summary = "[회원 관련] 회원 가입", description = """
             ### 회원 가입을 진행합니다.
             
             ### Request Body
@@ -50,7 +50,7 @@ public class UserController {
         return ApiResponse.onSuccess(SuccessStatus._OK, userCommandService.signUp(request));
     }
 
-    @Operation(summary = "[이메일 중복 확인]", description = """
+    @Operation(summary = "[회원 관련] 이메일 중복 확인 ", description = """
             ### 이메일 중복을 확인합니다.
             
             ### Request Body
@@ -62,7 +62,7 @@ public class UserController {
     }
 
     // 로그인
-    @Operation(summary = "[로그인]", description = """
+    @Operation(summary = "[회원 관련] 로그인", description = """
             ### 로그인을 진행합니다. 로그인 성공 시 access-token을 헤더에 포함하여 반환합니다.
             
             ### Request Body
@@ -76,7 +76,7 @@ public class UserController {
     }
 
     // 토큰 재발급
-    @Operation(summary = "[토큰 재발급]", description = """
+    @Operation(summary = "[회원 관련] 토큰 재발급", description = """
             ### 토큰을 재발급합니다. refresh-token을 이용하여 access-token을 재발급합니다.
             
             ### Request Header
@@ -89,7 +89,7 @@ public class UserController {
 
 
     // 마이페이지
-    @Operation(summary = "[마이 페이지]", description = """
+    @Operation(summary = "[회원 관련] 토큰 재발급", description = """
             ### 마이페이지를 조회합니다.
             """)
     @GetMapping("/my-page")
@@ -99,7 +99,7 @@ public class UserController {
 
 
     // 프로필 수정
-    @Operation(summary = "[프로필 수정]", description = """
+    @Operation(summary = "[회원 관련] 프로필 수정", description = """
             ### 프로필을 수정합니다.
             
             ### Request Body

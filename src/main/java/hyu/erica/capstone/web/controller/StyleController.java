@@ -36,7 +36,7 @@ public class StyleController {
             - name : 회원 이름
             - styleId : 스타일 ID (해당 스타일 ID로 선호 여행 스타일을 조회, 수정할 수 있습니다.)
             """)
-    @GetMapping("/")
+    @GetMapping("")
     public ApiResponse<?> getUserPlanStyle() {
         return ApiResponse.of(SuccessStatus._OK, styleCommandService.initStyle(SecurityUtils.getCurrentUserId()));
     }
