@@ -1,6 +1,8 @@
 package hyu.erica.capstone.web.controller;
 
 import hyu.erica.capstone.api.ApiResponse;
+import hyu.erica.capstone.api.code.status.SuccessStatus;
+import hyu.erica.capstone.service.tripPlan.TripPlanQueryService;
 import hyu.erica.capstone.web.dto.trip.request.AdditionalInfoRequestDTO;
 import hyu.erica.capstone.web.dto.trip.request.PreferActivitiesRequestDTO;
 import hyu.erica.capstone.web.dto.trip.request.SaveAttractionRequestDTO;
@@ -11,6 +13,7 @@ import hyu.erica.capstone.web.dto.trip.response.PreferActivitiesResponseDTO;
 import hyu.erica.capstone.web.dto.trip.response.TripPeriodResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,8 +25,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/trip-plans/{tripPlansId}")
+@RequestMapping("/api/trip-plans")
+@RequiredArgsConstructor
 public class TripPlanController {
+
+    private final TripPlanQueryService tripPlanQueryService;
 
 
     // 선택지 확인 (여행지)
@@ -34,11 +40,11 @@ public class TripPlanController {
             ### Path Variables
             - tripPlansId: 여행 계획 ID
                   """)
-    @GetMapping("/attractions")
+    @GetMapping("/{tripPlansId}/attractions")
     public ApiResponse<?> checkPlaces(
             @PathVariable Long tripPlansId) {
         // 선택지 확인 (여행지)
-        return null;
+        return ApiResponse.onSuccess(SuccessStatus._OK, tripPlanQueryService.getRecommendAttractions(tripPlansId));
     }
 
     // 선택지 상세 보기 (여행지)
@@ -52,10 +58,9 @@ public class TripPlanController {
                   """)
     @GetMapping("/attractions/{attractionId}")
     public ApiResponse<?> viewPlaceDetail(
-            @PathVariable Long tripPlansId,
             @PathVariable Long attractionId) {
         // 선택지 상세 보기 (여행지)
-        return null;
+        return ApiResponse.onSuccess(SuccessStatus._OK, tripPlanQueryService.getRecommendAttractionDetail(attractionId));
     }
 
     // 여행지 키워드 검색
@@ -71,10 +76,9 @@ public class TripPlanController {
                   """)
     @GetMapping("/attractions/search")
     public ApiResponse<?> searchPlace(
-            @PathVariable Long tripPlansId,
             @RequestParam String keyword) {
         // 여행지 키워드 검색
-        return null;
+        return ApiResponse.onSuccess(SuccessStatus._OK, tripPlanQueryService.searchRecommendAttraction(keyword));
     }
 
     // 여행지 최종 선택
@@ -86,7 +90,7 @@ public class TripPlanController {
             - tripPlansIds: 여행 계획 ID (List)
             
                   """)
-    @PostMapping("/attractions/final")
+    @PostMapping("/{tripPlansId}/attractions/final")
     public ApiResponse<?> finalPlace(
             @PathVariable Long tripPlansId,
             @RequestBody SaveAttractionRequestDTO request) {
@@ -102,11 +106,11 @@ public class TripPlanController {
             ### Path Variables
             - tripPlansId: 여행 계획 ID
                   """)
-    @GetMapping("/restaurants")
+    @GetMapping("/{tripPlansId}/restaurants")
     public ApiResponse<?> checkRestaurants(
             @PathVariable Long tripPlansId) {
         // 선택지 확인 (음식점)
-        return null;
+        return ApiResponse.onSuccess(SuccessStatus._OK, tripPlanQueryService.getRecommendRestaurants(tripPlansId));
     }
 
 
@@ -121,10 +125,9 @@ public class TripPlanController {
                   """)
     @GetMapping("/restaurants/{restaurantId}")
     public ApiResponse<?> viewRestaurantDetail(
-            @PathVariable Long tripPlansId,
             @PathVariable Long restaurantId) {
         // 선택지 상세 보기 (음식점)
-        return null;
+        return ApiResponse.onSuccess(SuccessStatus._OK, tripPlanQueryService.getRecommendRestaurantDetail(restaurantId));
     }
 
 
@@ -141,10 +144,9 @@ public class TripPlanController {
                   """)
     @GetMapping("/restaurants/search")
     public ApiResponse<?> searchRestaurant(
-            @PathVariable Long tripPlansId,
             @RequestParam String keyword) {
         // 음식점 키워드 검색
-        return null;
+        return ApiResponse.onSuccess(SuccessStatus._OK, tripPlanQueryService.searchRecommendRestaurant(keyword));
     }
 
 
