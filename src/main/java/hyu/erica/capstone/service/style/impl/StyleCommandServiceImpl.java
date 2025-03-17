@@ -85,16 +85,17 @@ public class StyleCommandServiceImpl implements StyleCommandService {
 
         // TODO 매핑 테이블에 데이터 저장하기
 
-//        List<Long> restaurantIds = restaurants.restaurant_ids();
-//
-//        for (Long restaurantId : restaurantIds) {
-//            Restaurant restaurant =  restaurantRepository.findById(restaurantId).orElseThrow(
-//                    () -> new GeneralException(ErrorStatus._RESTAURANT_NOT_FOUND));
-//            preferRestaurantRepository.save(PreferRestaurant.builder()
-//                    .restaurant(restaurant)
-//                    .user(user)
-//                    .build());
-//        }
+        List<Long> restaurantIds = restaurants.restaurant_ids();
+
+        for (Long restaurantId : restaurantIds) {
+            Restaurant restaurant =  restaurantRepository.findById(restaurantId).orElseThrow(
+                    () -> new GeneralException(ErrorStatus._RESTAURANT_NOT_FOUND));
+            preferRestaurantRepository.save(PreferRestaurant.builder()
+                    .restaurant(restaurant)
+                    .user(user)
+                    .isPrefer(true)
+                    .build());
+        }
 
 //        List<Long> attractionIds = attractions.attraction_ids();
 //        for (Long attractionId : attractionIds) {
