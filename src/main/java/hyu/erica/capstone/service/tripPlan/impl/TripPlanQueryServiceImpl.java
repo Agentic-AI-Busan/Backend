@@ -16,6 +16,7 @@ import hyu.erica.capstone.repository.UserRepository;
 import hyu.erica.capstone.service.tripPlan.TripPlanQueryService;
 import hyu.erica.capstone.web.dto.tripPlan.response.AttractionDetailResponseDTO;
 import hyu.erica.capstone.web.dto.tripPlan.response.AttractionListResponseDTO;
+import hyu.erica.capstone.web.dto.tripPlan.response.RestaurantDetailResponseDTO;
 import hyu.erica.capstone.web.dto.tripPlan.response.RestaurantListResponseDTO;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class TripPlanQueryServiceImpl implements TripPlanQueryService {
 
     private final TripPlanRepository tripPlanRepository;
+    private final AttractionRepository attractionRepository;
+    private final RestaurantRepository restaurantRepository;
     private final PreferRestaurantRepository preferRestaurantRepository;
     private final PreferAttractionRepository preferAttractionRepository;
     private final UserRepository userRepository;
@@ -48,7 +51,10 @@ public class TripPlanQueryServiceImpl implements TripPlanQueryService {
 
     @Override
     public AttractionDetailResponseDTO getRecommendAttractionDetail(Long attractionId) {
-        return null;
+        Attraction attraction = attractionRepository.findById(attractionId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus._ATTRACTION_NOT_FOUND));
+
+        return AttractionDetailResponseDTO.of(attraction);
     }
 
     @Override
@@ -71,12 +77,15 @@ public class TripPlanQueryServiceImpl implements TripPlanQueryService {
     }
 
     @Override
-    public AttractionDetailResponseDTO getRecommendRestaurantDetail(Long restaurantId) {
-        return null;
+    public RestaurantDetailResponseDTO getRecommendRestaurantDetail(Long restaurantId) {
+        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus._RESTAURANT_NOT_FOUND));
+
+        return RestaurantDetailResponseDTO.of(restaurant);
     }
 
     @Override
-    public AttractionDetailResponseDTO searchRecommendRestaurant(String keyword) {
+    public RestaurantDetailResponseDTO searchRecommendRestaurant(String keyword) {
         return null;
     }
 }
