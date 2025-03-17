@@ -5,6 +5,7 @@ import hyu.erica.capstone.api.exception.GeneralException;
 import hyu.erica.capstone.client.PlanClient;
 import hyu.erica.capstone.domain.Restaurant;
 import hyu.erica.capstone.domain.Style;
+import hyu.erica.capstone.domain.TripPlan;
 import hyu.erica.capstone.domain.User;
 import hyu.erica.capstone.domain.enums.City;
 import hyu.erica.capstone.domain.mapping.PreferRestaurant;
@@ -13,6 +14,7 @@ import hyu.erica.capstone.repository.PreferAttractionRepository;
 import hyu.erica.capstone.repository.PreferRestaurantRepository;
 import hyu.erica.capstone.repository.RestaurantRepository;
 import hyu.erica.capstone.repository.StyleRepository;
+import hyu.erica.capstone.repository.TripPlanRepository;
 import hyu.erica.capstone.repository.UserRepository;
 import hyu.erica.capstone.service.style.StyleCommandService;
 import hyu.erica.capstone.web.dto.client.RestaurantRequestDTO;
@@ -35,11 +37,15 @@ public class StyleCommandServiceImpl implements StyleCommandService {
     private final StyleRepository styleRepository;
     private final RestaurantRepository restaurantRepository;
     private final AttractionRepository attractionRepository;
+    private final TripPlanRepository tripPlanRepository;
 
     private final PreferRestaurantRepository preferRestaurantRepository;
     private final PreferAttractionRepository preferAttractionRepository;
 
     private final PlanClient planClient;
+
+    private final static String TITLE = "여행 계획";
+    private final static String PROFILE_IMAGE = "https://i.imgur.com/3zX2Z1b.png";
 
     @Override
     public UserStyleInitResponseDTO initStyle(Long userId) {
@@ -83,7 +89,14 @@ public class StyleCommandServiceImpl implements StyleCommandService {
 //        AttractionRequestDTO attractions = planClient.getAttractions(sb.toString());
         RestaurantRequestDTO restaurants = planClient.getRestaurants(sb.toString());
 
-        // TODO 매핑 테이블에 데이터 저장하기
+        TripPlan tripPlan = TripPlan.builder()
+                .user(user)
+                .startDate(style.getStartDate())
+                .endDate(style.getEndDate())
+                .title(TITLE)
+                .profileImage(PROFILE_IMAGE)
+                .build();
+
 
         List<Long> restaurantIds = restaurants.restaurant_ids();
 
@@ -94,6 +107,7 @@ public class StyleCommandServiceImpl implements StyleCommandService {
                     .restaurant(restaurant)
                     .user(user)
                     .isPrefer(true)
+                    .tripPlan(tripPlan)
                     .build());
         }
 
@@ -107,6 +121,8 @@ public class StyleCommandServiceImpl implements StyleCommandService {
 //                    .build());
 //        }
 
-        return UserStyleFinalResponseDTO.of(restaurants.restaurant_ids(), List.of());
+        TripPlan save = tripPlanRepository.save(tripPlan);
+
+        return UserStyleFinalResponseDTO.of(restaurants.restaurant_ids(), List.of(), save.getId());
     }
 }
