@@ -2,7 +2,7 @@ package hyu.erica.capstone.web.controller;
 
 import hyu.erica.capstone.api.ApiResponse;
 import hyu.erica.capstone.api.code.status.SuccessStatus;
-import hyu.erica.capstone.service.CsvImportService;
+import hyu.erica.capstone.service.util.CsvImportService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

@@ -1,16 +1,19 @@
 package hyu.erica.capstone.domain;
 
+import static jakarta.persistence.GenerationType.*;
 
-import static jakarta.persistence.GenerationType.IDENTITY;
-
-import hyu.erica.capstone.domain.enums.City;
+import hyu.erica.capstone.domain.mapping.PreferAttraction;
+import hyu.erica.capstone.domain.mapping.PreferRestaurant;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,33 +25,36 @@ import org.hibernate.annotations.DynamicUpdate;
 @Entity
 @Getter
 @Builder
+@Table(name = "trip_plan")
 @DynamicUpdate
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Style {
+public class TripPlan {
 
     @Id @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    private City city;
+    private String title;
+
+    private String description;
+
+    private String profileImage;
 
     private LocalDate startDate;
 
     private LocalDate endDate;
 
-    private String preferActivity;
-
-    private String requirement;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public void updateStyle(LocalDate startDate, LocalDate endDate, String preferActivity, String requirement) {
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.preferActivity = preferActivity;
-        this.requirement = requirement;
-    }
+    @OneToMany(mappedBy = "tripPlan", cascade = CascadeType.ALL)
+    private List<PreferAttraction> preferAttractions;
+
+    @OneToMany(mappedBy = "tripPlan", cascade = CascadeType.ALL)
+    private List<PreferRestaurant> preferRestaurants;
+
+
+
 }

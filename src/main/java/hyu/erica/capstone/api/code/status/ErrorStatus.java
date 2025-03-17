@@ -44,6 +44,12 @@ public enum ErrorStatus implements BaseErrorCode {
     // 식당 관련
     _RESTAURANT_NOT_FOUND(HttpStatus.NOT_FOUND, "RESTAURANT4040", "입력하신 식당을 찾을 수 없습니다."),
 
+    // 여행지 관련
+    _ATTRACTION_NOT_FOUND(HttpStatus.NOT_FOUND, "ATTRACTION4040", "입력하신 여행지를 찾을 수 없습니다."),
+
+    // 여행 계획 관련
+    _TRIP_PLAN_NOT_FOUND(HttpStatus.NOT_FOUND, "TRIP_PLAN4040", "입력하신 여행 계획을 찾을 수 없습니다."),
+
     ;
 
 

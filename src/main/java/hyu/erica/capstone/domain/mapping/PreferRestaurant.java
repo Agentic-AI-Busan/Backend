@@ -3,6 +3,7 @@ package hyu.erica.capstone.domain.mapping;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 import hyu.erica.capstone.domain.Restaurant;
+import hyu.erica.capstone.domain.TripPlan;
 import hyu.erica.capstone.domain.User;
 import hyu.erica.capstone.domain.base.BaseEntity;
 import jakarta.persistence.CascadeType;
@@ -42,5 +43,8 @@ public class PreferRestaurant extends BaseEntity {
 
     private boolean isPrefer;
 
-    // 메모
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "trip_plan_id")
+    private TripPlan tripPlan;
+
 }

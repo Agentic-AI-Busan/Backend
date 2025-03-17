@@ -1,4 +1,4 @@
-package hyu.erica.capstone.service;
+package hyu.erica.capstone.service.util;
 
 import static java.lang.Double.parseDouble;
 
@@ -78,16 +78,36 @@ public class CsvImportService {
 
             for (CSVRecord record : csvParser) {
                 Restaurant restaurant = Restaurant.builder()
-                        .rstrId(Long.parseLong(record.get("RSTR_ID")))
-                        .rstrNm(record.get("RSTR_NM"))
-                        .rstrRdnmAdr(record.get("RSTR_RDNMADR"))
-                        .rstrLnnoAdres(record.get("RSTR_LNNO_ADRES"))
-                        .rstrLa(parseDouble(record.get("RSTR_LA")))
-                        .rstrLo(parseDouble(record.get("RSTR_LO")))
-                        .rstrTelNo(record.get("RSTR_TELNO"))
-                        .bsnsStatmBzcndNm(record.get("BSNS_STATM_BZCND_NM"))
-                        .bsnsLcncNm(record.get("BSNS_LCNC_NM"))
-                        .rstrIntrcnCont(record.get("RSTR_INTRCN_CONT"))
+                        .id(Long.parseLong(record.get("RSTR_ID")))
+                        .restaurantName(record.get("RSTR_NM"))
+                        .roadAddress(record.get("RSTR_RDNMADR"))
+                        .lotAddress(record.get("RSTR_LNNO_ADRES"))
+                        .latitude(parseDouble(record.get("RSTR_LA")))
+                        .longitude(parseDouble(record.get("RSTR_LO")))
+                        .phoneNumber(record.get("RSTR_TELNO"))
+                        .businessStatus(record.get("BSNS_STATM_BZCND_NM"))
+                        .businessType(record.get("BSNS_LCNC_NM"))
+                        .description(record.get("RSTR_INTRCN_CONT"))
+                        .area(record.get("AREA_NM"))
+                        .seatCount(parseInteger(record.get("SEAT_CNT")))
+                        .hasParking(record.get("PRKG_POS_YN"))
+                        .hasWifi(record.get("WIFI_OFR_YN"))
+                        .hasDiscount(record.get("DCRN_YN"))
+                        .allowsPets(record.get("PET_ENTRN_POSBL_YN"))
+                        .hasForeignMenu(record.get("FGGG_MENU_OFR_YN"))
+                        .restroomInfo(record.get("TLROM_INFO_CN"))
+                        .holidayInfo(record.get("RESTDY_INFO_CN"))
+                        .businessHours(record.get("BSNS_TM_CN"))
+                        .offersHomeDelivery(record.get("HMDLV_SALE_YN"))
+                        .offersDelivery(record.get("DELV_SRVIC_YN"))
+                        .homepageUrl(record.get("HMPG_URL"))
+                        .nearbyLandmarkName(record.get("CRCMF_LDMARK_NM"))
+                        .nearbyLandmarkLatitude(parseDouble(record.get("CRCMF_LDMARK_LA")))
+                        .nearbyLandmarkLongitude(parseDouble(record.get("CRCMF_LDMARK_LO")))
+                        .nearbyLandmarkDistance(parseDouble(record.get("CRCMF_LDMARK_DIST")))
+                        .tripAdvisorRating(parseDouble(record.get("TRPDVSR_GRAD")))
+                        .cTripRating(parseDouble(record.get("CTRIP_GRAD")))
+                        .naverRating(parseDouble(record.get("NAVER_GRAD")))
                         .build();
                 batchList.add(restaurant);
             }
@@ -102,6 +122,14 @@ public class CsvImportService {
     private String trimString(String value, int maxLength) {
         if (value == null) return null;
         return value.length() > maxLength ? value.substring(0, maxLength) : value;
+    }
+
+    private Double parseDouble(String value) {
+        return (value == null || value.trim().isEmpty()) ? null : Double.parseDouble(value);
+    }
+
+    private Integer parseInteger(String value) {
+        return (value == null || value.trim().isEmpty()) ? null : Integer.parseInt(value);
     }
 
 
