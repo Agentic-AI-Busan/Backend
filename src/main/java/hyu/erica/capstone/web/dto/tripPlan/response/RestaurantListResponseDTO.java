@@ -1,10 +1,17 @@
 package hyu.erica.capstone.web.dto.tripPlan.response;
 
+import hyu.erica.capstone.domain.Restaurant;
+import java.util.ArrayList;
 import java.util.List;
 
 public record RestaurantListResponseDTO (List<RestaurantResponseDTO> restaurants, int totalElements) {
 
-    public static RestaurantListResponseDTO of(List<RestaurantResponseDTO> restaurants) {
-        return new RestaurantListResponseDTO(restaurants, restaurants.size());
+    public static RestaurantListResponseDTO of(List<Restaurant> restaurants) {
+        List<RestaurantResponseDTO> responseDTOS = new ArrayList<>();
+
+        for (Restaurant restaurant : restaurants)
+            responseDTOS.add(RestaurantResponseDTO.of(restaurant));
+
+        return new RestaurantListResponseDTO(responseDTOS, restaurants.size());
     }
 }
