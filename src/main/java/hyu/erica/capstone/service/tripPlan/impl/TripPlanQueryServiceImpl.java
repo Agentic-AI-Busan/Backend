@@ -16,8 +16,10 @@ import hyu.erica.capstone.repository.UserRepository;
 import hyu.erica.capstone.service.tripPlan.TripPlanQueryService;
 import hyu.erica.capstone.web.dto.tripPlan.response.AttractionDetailResponseDTO;
 import hyu.erica.capstone.web.dto.tripPlan.response.AttractionListResponseDTO;
+import hyu.erica.capstone.web.dto.tripPlan.response.AttractionSearchResponseDTO;
 import hyu.erica.capstone.web.dto.tripPlan.response.RestaurantDetailResponseDTO;
 import hyu.erica.capstone.web.dto.tripPlan.response.RestaurantListResponseDTO;
+import hyu.erica.capstone.web.dto.tripPlan.response.RestaurantSearchResponseDTO;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -58,8 +60,9 @@ public class TripPlanQueryServiceImpl implements TripPlanQueryService {
     }
 
     @Override
-    public AttractionDetailResponseDTO searchRecommendAttraction(String keyword) {
-        return null;
+    public AttractionSearchResponseDTO searchRecommendAttraction(String keyword) {
+        List<Attraction> attractions = attractionRepository.findByMainTitleContaining(keyword);
+        return AttractionSearchResponseDTO.of(attractions);
     }
 
     @Override
@@ -85,7 +88,8 @@ public class TripPlanQueryServiceImpl implements TripPlanQueryService {
     }
 
     @Override
-    public RestaurantDetailResponseDTO searchRecommendRestaurant(String keyword) {
-        return null;
+    public RestaurantSearchResponseDTO searchRecommendRestaurant(String keyword) {
+        List<Restaurant> restaurants = restaurantRepository.findByRestaurantNameContaining(keyword);
+        return RestaurantSearchResponseDTO.of(restaurants);
     }
 }
