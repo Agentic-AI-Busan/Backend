@@ -1,9 +1,10 @@
 package hyu.erica.capstone.web.dto.style.response;
 
 import hyu.erica.capstone.domain.Style;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public record UserStyleResponseDTO(String city, LocalDateTime startDate, LocalDateTime endDate,
+public record UserStyleResponseDTO(String city, LocalDate startDate, LocalDate endDate,
                                    String preferActivity, String requirement) {
 
     public static UserStyleResponseDTO of(Style style) {

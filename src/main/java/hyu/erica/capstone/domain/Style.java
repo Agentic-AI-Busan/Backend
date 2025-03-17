@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -32,9 +33,9 @@ public class Style {
 
     private City city;
 
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     private String preferActivity;
 
@@ -44,7 +45,7 @@ public class Style {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public void updateStyle( LocalDateTime startDate, LocalDateTime endDate, String preferActivity, String requirement) {
+    public void updateStyle(LocalDate startDate, LocalDate endDate, String preferActivity, String requirement) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.preferActivity = preferActivity;
