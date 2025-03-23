@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface PreferAttractionRepository extends JpaRepository<PreferAttraction, Long> {
 
     List<PreferAttraction> findAllByTripPlanId(Long tripPlanId);
+    boolean existsByAttraction_ContentIdAndUserId(Long attractionId, Long userId);
 }

@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PreferRestaurantRepository extends JpaRepository<PreferRestaurant, Long> {
     List<PreferRestaurant> findAllByTripPlanId(Long tripPlanId);
+    boolean existsByRestaurantIdAndUserId(Long restaurantId, Long userId);
 }
