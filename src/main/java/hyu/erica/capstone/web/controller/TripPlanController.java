@@ -33,7 +33,7 @@ public class TripPlanController {
 
 
     // 선택지 확인 (여행지)
-    @Tag(name = "[선택지 확인]", description = "선택지 확인 API")
+    @Tag(name = "선택지 확인", description = "선택지 확인 API")
     @Operation(summary = "선택지 (여행지) 확인", description = """
             ### 선택지 확인 API
             
@@ -158,7 +158,7 @@ public class TripPlanController {
             ### Path Variables
             - tripPlansIds: 여행 계획 ID (List)
                   """)
-    @PostMapping("/restaurants/final")
+    @PostMapping("/{tripPlansId}/restaurants/final")
     public ApiResponse<?> finalRestaurant(
             @PathVariable Long tripPlansId,
             @RequestBody SaveRestaurantRequestDTO request) {

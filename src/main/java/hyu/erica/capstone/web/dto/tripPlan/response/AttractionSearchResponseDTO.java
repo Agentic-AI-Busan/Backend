@@ -9,8 +9,8 @@ public record AttractionSearchResponseDTO(List<AttractionSearchDTO> attractions,
 
     private record AttractionSearchDTO (Long attractionId, String title, String imageUrl, String address, String usageDay) {
         private static AttractionSearchDTO of(Attraction attraction) {
-            return new AttractionSearchDTO(attraction.getUcSeq(), attraction.getTitle(), attraction.getMainImgNormal(),
-                    attraction.getAddr1(), attraction.getUsageDayWeekAndTime());
+            return new AttractionSearchDTO(attraction.getContentId(), attraction.getTitle(), attraction.getImageUrl(),
+                    attraction.getAddress(), attraction.getClosedDays());
         }
     }
     public static AttractionSearchResponseDTO of(List<Attraction> attractions) {

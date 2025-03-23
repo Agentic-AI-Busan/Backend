@@ -61,7 +61,7 @@ public class TripPlanQueryServiceImpl implements TripPlanQueryService {
 
     @Override
     public AttractionSearchResponseDTO searchRecommendAttraction(String keyword) {
-        List<Attraction> attractions = attractionRepository.findByMainTitleContaining(keyword);
+        List<Attraction> attractions = attractionRepository.findByContentNameContaining(keyword);
         return AttractionSearchResponseDTO.of(attractions);
     }
 

@@ -12,6 +12,6 @@ public interface PlanClient {
     @GetMapping("/restaurants/search")
     RestaurantRequestDTO getRestaurants(@RequestParam String query);
 
-    @GetMapping("/attractions/search")
+    @GetMapping("/attraction/search")
     AttractionRequestDTO getAttractions(@RequestParam String query);
 }

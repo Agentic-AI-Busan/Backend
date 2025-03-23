@@ -2,10 +2,13 @@ package hyu.erica.capstone.domain;
 
 import static jakarta.persistence.GenerationType.*;
 
+import hyu.erica.capstone.domain.enums.TripPlanStatus;
 import hyu.erica.capstone.domain.mapping.PreferAttraction;
 import hyu.erica.capstone.domain.mapping.PreferRestaurant;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -45,6 +48,9 @@ public class TripPlan {
 
     private LocalDate endDate;
 
+    @Enumerated(value = EnumType.STRING)
+    private TripPlanStatus tripPlanStatus;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -55,6 +61,10 @@ public class TripPlan {
     @OneToMany(mappedBy = "tripPlan", cascade = CascadeType.ALL)
     private List<PreferRestaurant> preferRestaurants;
 
+
+    public void setStatus(TripPlanStatus status) {
+        this.tripPlanStatus = status;
+    }
 
 
 }
