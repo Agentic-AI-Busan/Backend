@@ -7,7 +7,7 @@ public record AttractionListResponseDTO(List<AttractionResponseDTO> attractions,
 
     public static AttractionListResponseDTO of(List<Attraction> attractions) {
         List<AttractionResponseDTO> responseDTOS = attractions.stream()
-                .map(attraction -> new AttractionResponseDTO(attraction.getUcSeq(), attraction.getMainTitle(), attraction.getMainImgNormal()))
+                .map(attraction -> new AttractionResponseDTO(attraction.getContentId(), attraction.getContentName(), attraction.getImageUrl()))
                 .toList();
         return new AttractionListResponseDTO(responseDTOS, attractions.size());
     }

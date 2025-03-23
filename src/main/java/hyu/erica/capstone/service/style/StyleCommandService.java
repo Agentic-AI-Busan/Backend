@@ -4,6 +4,7 @@ import hyu.erica.capstone.web.dto.style.request.UserStyleRequestDTO;
 import hyu.erica.capstone.web.dto.style.response.UserStyleFinalResponseDTO;
 import hyu.erica.capstone.web.dto.style.response.UserStyleInitResponseDTO;
 import hyu.erica.capstone.web.dto.style.response.UserStyleResponseDTO;
+import hyu.erica.capstone.web.dto.tripPlan.response.TripPlanResponseDTO;
 
 public interface StyleCommandService {
 
@@ -11,5 +12,5 @@ public interface StyleCommandService {
 
     UserStyleResponseDTO updateStyle(Long userId, Long styleId, UserStyleRequestDTO request);
 
-    UserStyleFinalResponseDTO submitStyle(Long styleId, Long userId);
+    TripPlanResponseDTO submitStyle(Long styleId, Long userId);
 }

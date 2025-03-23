@@ -38,31 +38,32 @@ public class CsvImportService {
 
             for (CSVRecord record : csvParser) {
                 Attraction spot = Attraction.builder()
-                        .ucSeq(Long.parseLong(record.get("UC_SEQ")))
-                        .mainTitle(record.get("MAIN_TITLE"))
-                        .gugunNm(record.get("GUGUN_NM"))
-                        .lat(parseDouble(record.get("LAT")))
-                        .lng(parseDouble(record.get("LNG")))
-                        .place(record.get("PLACE"))
-                        .title(record.get("TITLE"))
-                        .subtitle(record.get("SUBTITLE"))
-                        .mainPlace(record.get("MAIN_PLACE"))
-                        .addr1(record.get("ADDR1"))
-                        .addr2(record.get("ADDR2"))
-                        .cntctTel(record.get("CNTCT_TEL"))
-                        .homepageUrl(record.get("HOMEPAGE_URL"))
-                        .trfcInfo(trimString(record.get("TRFC_INFO"), 1000))
-                        .usageDay(record.get("USAGE_DAY"))
-                        .hldyInfo(record.get("HLDY_INFO"))
-                        .usageDayWeekAndTime(record.get("USAGE_DAY_WEEK_AND_TIME"))
-                        .usageAmount(record.get("USAGE_AMOUNT"))
-                        .middleSizeRm1(record.get("MIDDLE_SIZE_RM1"))
-                        .mainImgNormal(record.get("MAIN_IMG_NORMAL"))
-                        .mainImgThumb(record.get("MAIN_IMG_THUMB"))
+                        .contentId(Long.parseLong(record.get("content_id")))
+                        .contentName(record.get("content_name"))
+                        .district(record.get("district"))
+                        .latitude(parseDouble(record.get("latitude")))
+                        .longitude(parseDouble(record.get("longitude")))
+                        .travelDestination(record.get("travel_destination"))
+                        .title(record.get("title"))
+                        .subtitle(record.get("subtitle"))
+                        .address(record.get("address"))
+                        .contact(record.get("contact"))
+                        .homepage(record.get("homepage"))
+                        .transportationInfo(trimString(record.get("transportation_info"), 1000))
+                        .operatingDays(record.get("operating_days"))
+                        .closedDays(record.get("closed_days"))
+                        .operatingHours(record.get("operating_hours"))
+                        .admissionFee(record.get("admission_fee"))
+                        .amenities(record.get("amenities"))
+                        .imageUrl(record.get("image_url"))
+                        .thumbnailImageUrl(record.get("thumbnail_image_url"))
+                        .details(record.get("details"))
                         .build();
 
                 touristSpots.add(spot);
             }
+
+
             attractionRepository.saveAll(touristSpots);
         } catch (Exception e) {
             e.printStackTrace();

@@ -22,70 +22,64 @@ import org.hibernate.annotations.DynamicUpdate;
 public class Attraction {
 
     @Id
-    @Column(name = "UC_SEQ")
-    private Long ucSeq;
+    @Column(name = "content_id")
+    private Long contentId;
 
-    @Column(name = "MAIN_TITLE")
-    private String mainTitle;
+    @Column(name = "content_name")
+    private String contentName;
 
-    @Column(name = "GUGUN_NM")
-    private String gugunNm;
+    @Column(name = "district")
+    private String district;
 
-    @Column(name = "LAT")
-    private Double lat;
+    @Column(name = "latitude")
+    private Double latitude;
 
-    @Column(name = "LNG")
-    private Double lng;
+    @Column(name = "longitude")
+    private Double longitude;
 
-    @Column(name = "PLACE")
-    private String place;
+    @Column(name = "travel_destination")
+    private String travelDestination;
 
-    @Column(name = "TITLE")
+    @Column(name = "title")
     private String title;
 
-    @Column(name = "SUBTITLE")
+    @Column(name = "subtitle")
     private String subtitle;
 
-    @Column(name = "MAIN_PLACE")
-    private String mainPlace;
+    @Column(name = "address")
+    private String address;
 
-    @Column(name = "ADDR1")
-    private String addr1;
+    @Column(name = "contact")
+    private String contact;
 
-    @Column(name = "ADDR2")
-    private String addr2;
+    @Column(name = "homepage")
+    private String homepage;
 
-    @Column(name = "CNTCT_TEL")
-    private String cntctTel;
+    @Column(name = "transportation_info", columnDefinition = "TEXT")
+    private String transportationInfo;
 
-    @Column(name = "HOMEPAGE_URL")
-    private String homepageUrl;
+    @Column(name = "operating_days")
+    private String operatingDays;
 
-    @Column(name = "TRFC_INFO", columnDefinition = "TEXT")
-    private String trfcInfo;
+    @Column(name = "closed_days")
+    private String closedDays;
 
-    @Column(name = "USAGE_DAY")
-    private String usageDay;
+    @Column(name = "operating_hours")
+    private String operatingHours;
 
-    @Column(name = "HLDY_INFO")
-    private String hldyInfo;
+    @Column(name = "admission_fee")
+    private String admissionFee;
 
-    @Column(name = "USAGE_DAY_WEEK_AND_TIME", columnDefinition = "TEXT")
-    private String usageDayWeekAndTime;
+    @Column(name = "amenities")
+    private String amenities;
 
-    @Column(name = "USAGE_AMOUNT")
-    private String usageAmount;
+    @Column(name = "image_url")
+    private String imageUrl;
 
-    @Column(name = "MIDDLE_SIZE_RM1")
-    private String middleSizeRm1;
+    @Column(name = "thumbnail_image_url")
+    private String thumbnailImageUrl;
 
-    @Column(name = "MAIN_IMG_NORMAL")
-    private String mainImgNormal;
+    @Column(name = "details", columnDefinition = "LONGTEXT")
+    private String details;
 
-    @Column(name = "MAIN_IMG_THUMB")
-    private String mainImgThumb;
-
-    @Lob
-    @Column(name = "ITEMCNTNTS")
-    private String itemcntnts; // ITEMCNTNTS (상세 설명)
 }
