@@ -18,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -41,6 +42,7 @@ public class PreferRestaurant extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Setter
     private boolean isPrefer;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
