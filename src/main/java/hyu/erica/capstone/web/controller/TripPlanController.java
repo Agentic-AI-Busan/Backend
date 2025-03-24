@@ -84,7 +84,7 @@ public class TripPlanController {
     }
 
     // 여행지 최종 선택
-    @Tag(name = "[개발 전] 선택지 확인", description = "선택지 확인 API")
+    @Tag(name = "선택지 확인", description = "선택지 확인 API")
     @Operation(summary = "여행지 최종 선택", description = """
             ### 여행지 최종 선택 API
             
@@ -153,7 +153,7 @@ public class TripPlanController {
 
 
     // 음식점 최종 선택
-    @Tag(name = "[개발 전] 선택지 확인", description = "선택지 확인 API")
+    @Tag(name = "선택지 확인", description = "선택지 확인 API")
     @Operation(summary = "음식점 최종 선택", description = """
             ### 음식점 최종 선택 API
             
