@@ -28,7 +28,7 @@ public class TripPlanCommandServiceImpl implements TripPlanCommandService {
         List<PreferAttraction> preferAttractions = preferAttractionRepository.findAllByTripPlanId(tripPlanId);
 
         for (PreferAttraction preferAttraction : preferAttractions) {
-            if (!request.attractionIds().contains(preferAttraction.getId())) {
+            if (!request.attractionIds().contains(preferAttraction.getAttraction().getContentId())) {
                 preferAttraction.setPrefer(false);
             }
         }
@@ -41,7 +41,7 @@ public class TripPlanCommandServiceImpl implements TripPlanCommandService {
         List<PreferRestaurant> preferRestaurants = preferRestaurantRepository.findAllByTripPlanId(tripPlanId);
 
         for (PreferRestaurant preferRestaurant : preferRestaurants) {
-            if (!request.restaurantIds().contains(preferRestaurant.getId())) {
+            if (!request.restaurantIds().contains(preferRestaurant.getRestaurant().getId())) {
                 preferRestaurant.setPrefer(false);
             }
         }

@@ -2,6 +2,7 @@ package hyu.erica.capstone.web.controller;
 
 import hyu.erica.capstone.api.ApiResponse;
 import hyu.erica.capstone.api.code.status.SuccessStatus;
+import hyu.erica.capstone.service.tripPlan.TripPlanCommandService;
 import hyu.erica.capstone.service.tripPlan.TripPlanQueryService;
 import hyu.erica.capstone.web.dto.trip.request.AdditionalInfoRequestDTO;
 import hyu.erica.capstone.web.dto.trip.request.PreferActivitiesRequestDTO;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TripPlanController {
 
     private final TripPlanQueryService tripPlanQueryService;
+    private final TripPlanCommandService tripPlanCommandService;
 
 
     // 선택지 확인 (여행지)
@@ -95,7 +97,7 @@ public class TripPlanController {
             @PathVariable Long tripPlansId,
             @RequestBody SaveAttractionRequestDTO request) {
         // 여행지 최종 선택
-        return null;
+        return ApiResponse.onSuccess(SuccessStatus._OK, tripPlanCommandService.confirmAttractionRecommendation(tripPlansId, request));
     }
 
     // 선택지 확인 (음식점)
@@ -163,7 +165,7 @@ public class TripPlanController {
             @PathVariable Long tripPlansId,
             @RequestBody SaveRestaurantRequestDTO request) {
         // 음식점 최종 선택
-        return null;
+        return ApiResponse.onSuccess(SuccessStatus._OK, tripPlanCommandService.confirmRestaurantRecommendation(tripPlansId, request));
     }
 
 
