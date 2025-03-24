@@ -68,6 +68,8 @@ public record TripPlanResultResponseDTO(
             int order,
             PlaceType placeType, // "ATTRACTION" or "RESTAURANT"
             Long placeId,
+            Double latitude,
+            Double longitude,
             String name,
             String imageUrl,
             String memo
@@ -77,6 +79,8 @@ public record TripPlanResultResponseDTO(
             Long placeId;
             String name;
             String imageUrl;
+            Double latitude;
+            Double longitude;
 
             switch (placeType) {
                 case ATTRACTION -> {
@@ -84,12 +88,16 @@ public record TripPlanResultResponseDTO(
                     placeId = attraction.getContentId();
                     name = attraction.getContentName();
                     imageUrl = attraction.getImageUrl();
+                    latitude = attraction.getLatitude();
+                    longitude = attraction.getLongitude();
                 }
                 case RESTAURANT -> {
                     Restaurant restaurant = tripScheduleItem.getRestaurant();
                     placeId = restaurant.getId();
                     name = restaurant.getRestaurantName();
-                    imageUrl = restaurant.getHomepageUrl(); // 또는 대표 이미지 필드로 교체 가능
+                    imageUrl = restaurant.getHomepageUrl(); // 임시 처리
+                    latitude = restaurant.getLatitude();
+                    longitude = restaurant.getLongitude();
                 }
                 default -> throw new IllegalArgumentException("지원하지 않는 장소 타입입니다.");
             }
@@ -99,6 +107,8 @@ public record TripPlanResultResponseDTO(
                     tripScheduleItem.getOrderInDay(),
                     placeType,
                     placeId,
+                    latitude,
+                    longitude,
                     name,
                     imageUrl,
                     tripScheduleItem.getMemo()
