@@ -1,5 +1,7 @@
 package hyu.erica.capstone.web.dto.tripPlan.response;
 
+import hyu.erica.capstone.api.code.status.ErrorStatus;
+import hyu.erica.capstone.api.exception.GeneralException;
 import hyu.erica.capstone.domain.Attraction;
 import hyu.erica.capstone.domain.Restaurant;
 import hyu.erica.capstone.domain.TripPlan;
@@ -99,7 +101,7 @@ public record TripPlanResultResponseDTO(
                     latitude = restaurant.getLatitude();
                     longitude = restaurant.getLongitude();
                 }
-                default -> throw new IllegalArgumentException("지원하지 않는 장소 타입입니다.");
+                default -> throw new GeneralException(ErrorStatus._UNSUPPORTED_PLACE_TYPE);
             }
 
             return new TripScheduleItemDTO(
