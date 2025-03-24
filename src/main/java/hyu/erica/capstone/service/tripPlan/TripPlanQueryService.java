@@ -1,11 +1,11 @@
 package hyu.erica.capstone.service.tripPlan;
 
-import hyu.erica.capstone.web.dto.tripPlan.response.AttractionDetailResponseDTO;
-import hyu.erica.capstone.web.dto.tripPlan.response.AttractionListResponseDTO;
-import hyu.erica.capstone.web.dto.tripPlan.response.AttractionSearchResponseDTO;
-import hyu.erica.capstone.web.dto.tripPlan.response.RestaurantDetailResponseDTO;
-import hyu.erica.capstone.web.dto.tripPlan.response.RestaurantListResponseDTO;
-import hyu.erica.capstone.web.dto.tripPlan.response.RestaurantSearchResponseDTO;
+import hyu.erica.capstone.web.dto.tripPlan.response.attraction.AttractionDetailResponseDTO;
+import hyu.erica.capstone.web.dto.tripPlan.response.attraction.AttractionListResponseDTO;
+import hyu.erica.capstone.web.dto.tripPlan.response.attraction.AttractionSearchResponseDTO;
+import hyu.erica.capstone.web.dto.tripPlan.response.restaurant.RestaurantDetailResponseDTO;
+import hyu.erica.capstone.web.dto.tripPlan.response.restaurant.RestaurantListResponseDTO;
+import hyu.erica.capstone.web.dto.tripPlan.response.restaurant.RestaurantSearchResponseDTO;
 
 public interface TripPlanQueryService {
 
