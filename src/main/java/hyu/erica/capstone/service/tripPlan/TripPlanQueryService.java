@@ -1,5 +1,6 @@
 package hyu.erica.capstone.service.tripPlan;
 
+import hyu.erica.capstone.web.dto.tripPlan.response.TripPlanResultResponseDTO;
 import hyu.erica.capstone.web.dto.tripPlan.response.attraction.AttractionDetailResponseDTO;
 import hyu.erica.capstone.web.dto.tripPlan.response.attraction.AttractionListResponseDTO;
 import hyu.erica.capstone.web.dto.tripPlan.response.attraction.AttractionSearchResponseDTO;
@@ -8,6 +9,9 @@ import hyu.erica.capstone.web.dto.tripPlan.response.restaurant.RestaurantListRes
 import hyu.erica.capstone.web.dto.tripPlan.response.restaurant.RestaurantSearchResponseDTO;
 
 public interface TripPlanQueryService {
+
+    // 여행 일정 조회
+    TripPlanResultResponseDTO getTripPlan(Long tripPlanId);
 
     // 추천 여행지 리스트 조회
     AttractionListResponseDTO getRecommendAttractions(Long tripPlanId);
