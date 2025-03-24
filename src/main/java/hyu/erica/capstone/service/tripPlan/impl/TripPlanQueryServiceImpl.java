@@ -5,6 +5,7 @@ import hyu.erica.capstone.api.exception.GeneralException;
 import hyu.erica.capstone.domain.Attraction;
 import hyu.erica.capstone.domain.Restaurant;
 import hyu.erica.capstone.domain.TripPlan;
+import hyu.erica.capstone.domain.TripScheduleItem;
 import hyu.erica.capstone.domain.mapping.PreferAttraction;
 import hyu.erica.capstone.domain.mapping.PreferRestaurant;
 import hyu.erica.capstone.repository.AttractionRepository;
@@ -12,14 +13,16 @@ import hyu.erica.capstone.repository.PreferAttractionRepository;
 import hyu.erica.capstone.repository.PreferRestaurantRepository;
 import hyu.erica.capstone.repository.RestaurantRepository;
 import hyu.erica.capstone.repository.TripPlanRepository;
+import hyu.erica.capstone.repository.TripScheduleItemRepository;
 import hyu.erica.capstone.repository.UserRepository;
 import hyu.erica.capstone.service.tripPlan.TripPlanQueryService;
-import hyu.erica.capstone.web.dto.tripPlan.response.AttractionDetailResponseDTO;
-import hyu.erica.capstone.web.dto.tripPlan.response.AttractionListResponseDTO;
-import hyu.erica.capstone.web.dto.tripPlan.response.AttractionSearchResponseDTO;
-import hyu.erica.capstone.web.dto.tripPlan.response.RestaurantDetailResponseDTO;
-import hyu.erica.capstone.web.dto.tripPlan.response.RestaurantListResponseDTO;
-import hyu.erica.capstone.web.dto.tripPlan.response.RestaurantSearchResponseDTO;
+import hyu.erica.capstone.web.dto.tripPlan.response.TripPlanResultResponseDTO;
+import hyu.erica.capstone.web.dto.tripPlan.response.attraction.AttractionDetailResponseDTO;
+import hyu.erica.capstone.web.dto.tripPlan.response.attraction.AttractionListResponseDTO;
+import hyu.erica.capstone.web.dto.tripPlan.response.attraction.AttractionSearchResponseDTO;
+import hyu.erica.capstone.web.dto.tripPlan.response.restaurant.RestaurantDetailResponseDTO;
+import hyu.erica.capstone.web.dto.tripPlan.response.restaurant.RestaurantListResponseDTO;
+import hyu.erica.capstone.web.dto.tripPlan.response.restaurant.RestaurantSearchResponseDTO;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,7 +38,18 @@ public class TripPlanQueryServiceImpl implements TripPlanQueryService {
     private final RestaurantRepository restaurantRepository;
     private final PreferRestaurantRepository preferRestaurantRepository;
     private final PreferAttractionRepository preferAttractionRepository;
+    private final TripScheduleItemRepository tripScheduleItemRepository;
     private final UserRepository userRepository;
+
+    @Override
+    public TripPlanResultResponseDTO getTripPlan(Long tripPlanId) {
+        TripPlan tripPlan = tripPlanRepository.findById(tripPlanId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus._TRIP_PLAN_NOT_FOUND));
+
+        List<TripScheduleItem> tripScheduleItems = tripScheduleItemRepository.findAllByTripPlanId(tripPlanId);
+
+        return TripPlanResultResponseDTO.of(tripPlan, tripScheduleItems);
+    }
 
     @Override
     public AttractionListResponseDTO getRecommendAttractions(Long tripPlanId) {

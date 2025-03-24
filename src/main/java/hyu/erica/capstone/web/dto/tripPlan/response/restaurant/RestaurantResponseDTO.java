@@ -1,4 +1,4 @@
-package hyu.erica.capstone.web.dto.tripPlan.response;
+package hyu.erica.capstone.web.dto.tripPlan.response.restaurant;
 
 import hyu.erica.capstone.domain.Restaurant;
 

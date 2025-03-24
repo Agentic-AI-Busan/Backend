@@ -55,10 +55,14 @@ public class TripPlan {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "tripPlan", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "tripPlan", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TripScheduleItem> tripScheduleItems;
+
+
+    @OneToMany(mappedBy = "tripPlan", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PreferAttraction> preferAttractions;
 
-    @OneToMany(mappedBy = "tripPlan", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "tripPlan", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PreferRestaurant> preferRestaurants;
 
 

@@ -1,13 +1,17 @@
 package hyu.erica.capstone.service.tripPlan;
 
-import hyu.erica.capstone.web.dto.tripPlan.response.AttractionDetailResponseDTO;
-import hyu.erica.capstone.web.dto.tripPlan.response.AttractionListResponseDTO;
-import hyu.erica.capstone.web.dto.tripPlan.response.AttractionSearchResponseDTO;
-import hyu.erica.capstone.web.dto.tripPlan.response.RestaurantDetailResponseDTO;
-import hyu.erica.capstone.web.dto.tripPlan.response.RestaurantListResponseDTO;
-import hyu.erica.capstone.web.dto.tripPlan.response.RestaurantSearchResponseDTO;
+import hyu.erica.capstone.web.dto.tripPlan.response.TripPlanResultResponseDTO;
+import hyu.erica.capstone.web.dto.tripPlan.response.attraction.AttractionDetailResponseDTO;
+import hyu.erica.capstone.web.dto.tripPlan.response.attraction.AttractionListResponseDTO;
+import hyu.erica.capstone.web.dto.tripPlan.response.attraction.AttractionSearchResponseDTO;
+import hyu.erica.capstone.web.dto.tripPlan.response.restaurant.RestaurantDetailResponseDTO;
+import hyu.erica.capstone.web.dto.tripPlan.response.restaurant.RestaurantListResponseDTO;
+import hyu.erica.capstone.web.dto.tripPlan.response.restaurant.RestaurantSearchResponseDTO;
 
 public interface TripPlanQueryService {
+
+    // 여행 일정 조회
+    TripPlanResultResponseDTO getTripPlan(Long tripPlanId);
 
     // 추천 여행지 리스트 조회
     AttractionListResponseDTO getRecommendAttractions(Long tripPlanId);

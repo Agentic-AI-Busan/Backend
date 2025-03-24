@@ -1,4 +1,4 @@
-package hyu.erica.capstone.web.dto.tripPlan.response;
+package hyu.erica.capstone.web.dto.tripPlan.response.attraction;
 
 import hyu.erica.capstone.domain.Attraction;
 import java.util.ArrayList;

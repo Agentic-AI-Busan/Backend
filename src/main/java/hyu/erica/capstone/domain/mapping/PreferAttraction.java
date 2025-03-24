@@ -19,6 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -42,6 +43,7 @@ public class PreferAttraction extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Setter
     private boolean isPrefer;
 
 

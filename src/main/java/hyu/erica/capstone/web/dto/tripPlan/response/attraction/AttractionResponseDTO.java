@@ -1,4 +1,4 @@
-package hyu.erica.capstone.web.dto.tripPlan.response;
+package hyu.erica.capstone.web.dto.tripPlan.response.attraction;
 
 public record AttractionResponseDTO(Long attractionId, String name, String imageUrl) {
 

@@ -28,6 +28,7 @@ public enum ErrorStatus implements BaseErrorCode {
     _TERMS_NOT_AGREED(HttpStatus.FORBIDDEN, "COMMON4013", "이용 약관이 동의되지 않았습니다."),
     _MEMBER_EMAIL_EXIST(HttpStatus.BAD_REQUEST, "COMMON4014", "이미 가입 된 이메일입니다. 다른 로그인 방식을 이용해주세요."),
     _RSA_ERROR(HttpStatus.BAD_REQUEST, "COMMON4015", "RSA 에러가 발생했습니다."),
+    _UNSUPPORTED_PLACE_TYPE(HttpStatus.BAD_REQUEST, "PLACE4000", "지원하지 않는 장소 타입입니다."),
 
     // 파일 에러
     _FILE_INPUT_ERROR(HttpStatus.BAD_REQUEST, "FILE4000", "파일 입력 중 에러가 발생했습니다."),

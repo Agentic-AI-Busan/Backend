@@ -86,7 +86,7 @@ public class StyleCommandServiceImpl implements StyleCommandService {
                 .build();
 
         TripPlan saved = tripPlanRepository.save(tripPlan);
-        entityManager.flush();
+        tripPlanRepository.flush();
 
         // 비동기 처리 시작
         asyncService.handleTripPlanDetails(saved.getId(), style, user);
