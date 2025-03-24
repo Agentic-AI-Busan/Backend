@@ -19,9 +19,11 @@ import hyu.erica.capstone.service.tripPlan.TripPlanCommandService;
 import hyu.erica.capstone.web.dto.trip.request.SaveAttractionRequestDTO;
 import hyu.erica.capstone.web.dto.trip.request.SaveRestaurantRequestDTO;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,84 +66,78 @@ public class TripPlanCommandServiceImpl implements TripPlanCommandService {
         createTripPlanFinal(tripPlanId);
         return tripPlanId;
     }
-
     private void createTripPlanFinal(Long tripPlanId) {
         TripPlan tripPlan = tripPlanRepository.findById(tripPlanId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus._TRIP_PLAN_NOT_FOUND));
 
-        List<PreferAttraction> attractions = preferAttractionRepository.findByTripPlanIdAndIsPreferTrue(tripPlanId);
-        List<PreferRestaurant> restaurants = preferRestaurantRepository.findByTripPlanIdAndIsPreferTrue(tripPlanId);
+        List<Attraction> allAttractions = preferAttractionRepository.findByTripPlanIdAndIsPreferTrue(tripPlanId)
+                .stream().map(PreferAttraction::getAttraction).collect(Collectors.toList());
+
+        List<Restaurant> allRestaurants = preferRestaurantRepository.findByTripPlanIdAndIsPreferTrue(tripPlanId)
+                .stream().map(PreferRestaurant::getRestaurant).collect(Collectors.toList());
 
         int totalDays = (int) DAYS.between(tripPlan.getStartDate(), tripPlan.getEndDate()) + 1;
 
-        Random random = new Random();
+        // 섞기
+        Collections.shuffle(allAttractions);
+        Collections.shuffle(allRestaurants);
+
+        // 필요한 개수만큼만 사용 (초과할 경우 대비)
+        int maxAttractions = Math.min(totalDays * 2, allAttractions.size());
+        int maxRestaurants = Math.min(totalDays * 2, allRestaurants.size());
+
+        List<Attraction> usableAttractions = allAttractions.subList(0, maxAttractions);
+        List<Restaurant> usableRestaurants = allRestaurants.subList(0, maxRestaurants);
+
         List<TripScheduleItem> scheduleItems = new ArrayList<>();
 
-        for (int day = 1; day <= totalDays; day++) {
-            // 랜덤 피벗 선택
-            Attraction pivot = getRandom(attractions, random).getAttraction();
-            Restaurant restaurantPivot = getRandom(restaurants, random).getRestaurant();
-
-            List<Attraction> sortedAttractions = attractions.stream()
-                    .map(PreferAttraction::getAttraction)
-                    .sorted(Comparator.comparingDouble(a ->
-                            distance(pivot.getLatitude(), pivot.getLongitude(), a.getLatitude(), a.getLongitude())))
-                    .limit(3)
-                    .toList();
-
-            List<Restaurant> sortedRestaurants = restaurants.stream()
-                    .map(PreferRestaurant::getRestaurant)
-                    .sorted(Comparator.comparingDouble(r ->
-                            distance(restaurantPivot.getLatitude(), restaurantPivot.getLongitude(),
-                                    r.getLatitude(), r.getLongitude())))
-                    .limit(3)
-                    .toList();
-
+        for (int day = 0; day < totalDays; day++) {
             int order = 1;
-            for (int i = 0; i < 3; i++) {
-                // 여행지 먼저
-                if (i < sortedAttractions.size()) {
-                    scheduleItems.add(TripScheduleItem.builder()
-                            .tripPlan(tripPlan)
-                            .dayNumber(day)
-                            .orderInDay(order++)
-                            .placeType(PlaceType.ATTRACTION)
-                            .attraction(sortedAttractions.get(i))
-                            .build());
-                }
 
-                // 식당 다음
-                if (i < sortedRestaurants.size()) {
-                    scheduleItems.add(TripScheduleItem.builder()
-                            .tripPlan(tripPlan)
-                            .dayNumber(day)
-                            .orderInDay(order++)
-                            .placeType(PlaceType.RESTAURANT)
-                            .restaurant(sortedRestaurants.get(i))
-                            .build());
-                }
+            // 각 날짜마다 2개씩 할당
+            if (day * 2 + 1 < usableAttractions.size()) {
+                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.ATTRACTION, usableAttractions.get(day * 2)));
+                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.RESTAURANT, usableRestaurants.get(day * 2)));
+                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.ATTRACTION, usableAttractions.get(day * 2 + 1)));
+                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.RESTAURANT, usableRestaurants.get(day * 2 + 1)));
             }
         }
-
 
         tripScheduleItemRepository.saveAll(scheduleItems);
     }
 
-    private double distance(double lat1, double lon1, double lat2, double lon2) {
-        double R = 6371; // Earth radius in km
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLon = Math.toRadians(lon2 - lon1);
-        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
-                        Math.sin(dLon/2) * Math.sin(dLon/2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        return R * c; // in kilometers
+    private TripScheduleItem createScheduleItem(TripPlan tripPlan, int day, int order, PlaceType type, Object place) {
+        TripScheduleItem.TripScheduleItemBuilder builder = TripScheduleItem.builder()
+                .tripPlan(tripPlan)
+                .dayNumber(day)
+                .orderInDay(order)
+                .placeType(type);
+
+        if (type == PlaceType.ATTRACTION) {
+            builder.attraction((Attraction) place);
+        } else {
+            builder.restaurant((Restaurant) place);
+        }
+
+        return builder.build();
     }
 
 
-    private <T> T getRandom(List<T> list, Random random) {
-        return list.get(random.nextInt(list.size()));
-    }
+//    private double distance(double lat1, double lon1, double lat2, double lon2) {
+//        double R = 6371; // Earth radius in km
+//        double dLat = Math.toRadians(lat2 - lat1);
+//        double dLon = Math.toRadians(lon2 - lon1);
+//        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+//                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+//                        Math.sin(dLon/2) * Math.sin(dLon/2);
+//        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+//        return R * c; // in kilometers
+//    }
+//
+//
+//    private <T> T getRandom(List<T> list, Random random) {
+//        return list.get(random.nextInt(list.size()));
+//    }
 
 
 }
