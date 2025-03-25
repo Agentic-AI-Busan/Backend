@@ -82,6 +82,7 @@ public class StyleBackgroundTaskService {
                 preferAttractionRepository.save(PreferAttraction.builder()
                         .attraction(attraction)
                         .user(managedUser)
+                        .isPrefer(true)
                         .tripPlan(tripPlan)
                         .build());
             }

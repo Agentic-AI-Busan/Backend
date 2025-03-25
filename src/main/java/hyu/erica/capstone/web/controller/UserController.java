@@ -76,26 +76,26 @@ public class UserController {
     }
 
     // 토큰 재발급
-    @Operation(summary = "[회원 관련] 토큰 재발급", description = """
-            ### 토큰을 재발급합니다. refresh-token을 이용하여 access-token을 재발급합니다.
-            
-            ### Request Header
-            - RefreshToken: {refresh-token}
-            """)
-    @PostMapping("/reissue-token")
-    public ApiResponse<?> reissueToken() {
-        return null;
-    }
+//    @Operation(summary = "[회원 관련] 토큰 재발급", description = """
+//            ### 토큰을 재발급합니다. refresh-token을 이용하여 access-token을 재발급합니다.
+//
+//            ### Request Header
+//            - RefreshToken: {refresh-token}
+//            """)
+//    @PostMapping("/reissue-token")
+//    public ApiResponse<?> reissueToken() {
+//        return null;
+//    }
 
 
     // 마이페이지
-    @Operation(summary = "[회원 관련] 토큰 재발급", description = """
-            ### 마이페이지를 조회합니다.
-            """)
-    @GetMapping("/my-page")
-    public ApiResponse<?> myPage() {
-        return ApiResponse.onSuccess(SuccessStatus._OK, SecurityUtils.getCurrentUserId());
-    }
+//    @Operation(summary = "[회원 관련] 토큰 재발급", description = """
+//            ### 마이페이지를 조회합니다.
+//            """)
+//    @GetMapping("/my-page")
+//    public ApiResponse<?> myPage() {
+//        return ApiResponse.onSuccess(SuccessStatus._OK, SecurityUtils.getCurrentUserId());
+//    }
 
 
     // 프로필 수정
