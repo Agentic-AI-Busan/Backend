@@ -118,15 +118,6 @@ public class PlanController {
     }
 
 
-
-    // 최종 저장
-    @PostMapping("/final")
-    public ApiResponse<?> finalSave() {
-        // 최종 저장
-        return null;
-    }
-
-
 //
 //    // 채팅 입력 -> AI API 호출
 //    @PostMapping("/chat")
