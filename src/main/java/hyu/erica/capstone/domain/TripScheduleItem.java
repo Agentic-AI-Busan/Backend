@@ -48,4 +48,13 @@ public class TripScheduleItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant; // nullable
+
+    public void updateDayAndOrder(int dayNumber, int orderInDay) {
+        this.dayNumber = dayNumber;
+        this.orderInDay = orderInDay;
+    }
+
+    public void updateMemo(String memo) {
+        this.memo = memo;
+    }
 }

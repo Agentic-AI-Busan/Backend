@@ -11,18 +11,25 @@ import hyu.erica.capstone.domain.TripScheduleItem;
 import hyu.erica.capstone.domain.enums.PlaceType;
 import hyu.erica.capstone.domain.mapping.PreferAttraction;
 import hyu.erica.capstone.domain.mapping.PreferRestaurant;
+import hyu.erica.capstone.repository.AttractionRepository;
 import hyu.erica.capstone.repository.PreferAttractionRepository;
 import hyu.erica.capstone.repository.PreferRestaurantRepository;
+import hyu.erica.capstone.repository.RestaurantRepository;
 import hyu.erica.capstone.repository.TripPlanRepository;
 import hyu.erica.capstone.repository.TripScheduleItemRepository;
 import hyu.erica.capstone.service.tripPlan.TripPlanCommandService;
 import hyu.erica.capstone.web.dto.trip.request.SaveAttractionRequestDTO;
 import hyu.erica.capstone.web.dto.trip.request.SaveRestaurantRequestDTO;
+import hyu.erica.capstone.web.dto.tripPlan.request.UpdateAllScheduleOrderRequest;
+import hyu.erica.capstone.web.dto.tripPlan.request.UpdateAllScheduleOrderRequest.ScheduleOrderItemDTO;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,6 +39,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class TripPlanCommandServiceImpl implements TripPlanCommandService {
+
+    private final AttractionRepository attractionRepository;
+    private final RestaurantRepository restaurantRepository;
 
     private final PreferAttractionRepository preferAttractionRepository;
     private final PreferRestaurantRepository preferRestaurantRepository;
@@ -66,6 +76,47 @@ public class TripPlanCommandServiceImpl implements TripPlanCommandService {
         createTripPlanFinal(tripPlanId);
         return tripPlanId;
     }
+
+    @Override
+    public void updatePlan(UpdateAllScheduleOrderRequest request) {
+        List<TripScheduleItem> existingItems = tripScheduleItemRepository
+                .findAllByTripPlanId(request.tripPlanId());
+
+        Map<Long, TripScheduleItem> existingItemMap = existingItems.stream()
+                .collect(Collectors.toMap(TripScheduleItem::getId, item -> item));
+
+        Set<Long> updatedIds = new HashSet<>();
+
+        for (ScheduleOrderItemDTO dto : request.items()) {
+            if (dto.id() != null && existingItemMap.containsKey(dto.id())) {
+                // 수정
+                TripScheduleItem item = existingItemMap.get(dto.id());
+                item.updateDayAndOrder(dto.dayNumber(), dto.orderInDay());
+                item.updateMemo(dto.memo());
+                updatedIds.add(dto.id());
+            } else {
+
+                TripScheduleItem newItem = TripScheduleItem.builder()
+                        .tripPlan(tripPlanRepository.getReferenceById(request.tripPlanId()))
+                        .dayNumber(dto.dayNumber())
+                        .orderInDay(dto.orderInDay())
+                        .placeType(dto.placeType())
+                        .attraction(dto.attractionId() != null ? attractionRepository.getReferenceById(dto.attractionId()) : null)
+                        .restaurant(dto.restaurantId() != null ? restaurantRepository.getReferenceById(dto.restaurantId()) : null)
+                        .memo(dto.memo())
+                        .build();
+                tripScheduleItemRepository.save(newItem);
+            }
+        }
+
+        // 삭제 대상 처리 (요청에 없는 기존 ID는 삭제)
+        for (TripScheduleItem item : existingItems) {
+            if (!updatedIds.contains(item.getId())) {
+                tripScheduleItemRepository.delete(item);
+            }
+        }
+    }
+
     private void createTripPlanFinal(Long tripPlanId) {
         TripPlan tripPlan = tripPlanRepository.findById(tripPlanId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus._TRIP_PLAN_NOT_FOUND));

@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TripScheduleItemRepository extends JpaRepository<TripScheduleItem, Long> {
     List<TripScheduleItem> findAllByTripPlanId(Long tripPlanId);
+
+    List<TripScheduleItem> findAllByTripPlanIdAndDayNumber(Long tripPlanId, int dayNumber);
 }
