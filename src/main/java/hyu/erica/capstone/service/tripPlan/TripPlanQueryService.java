@@ -13,6 +13,9 @@ public interface TripPlanQueryService {
     // 여행 일정 조회
     TripPlanResultResponseDTO getTripPlan(Long tripPlanId);
 
+    // 여행 일정 일자별 조회
+    TripPlanResultResponseDTO getTripPlanByDay(Long tripPlanId, int day);
+
     // 추천 여행지 리스트 조회
     AttractionListResponseDTO getRecommendAttractions(Long tripPlanId);
 
