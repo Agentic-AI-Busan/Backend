@@ -25,6 +25,8 @@ import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 @Service
 @Transactional
@@ -88,8 +90,12 @@ public class StyleCommandServiceImpl implements StyleCommandService {
         TripPlan saved = tripPlanRepository.save(tripPlan);
         tripPlanRepository.flush();
 
-        // 비동기 처리 시작
-        asyncService.handleTripPlanDetails(saved.getId(), style, user);
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+            @Override
+            public void afterCommit() {
+                asyncService.handleTripPlanDetails(saved.getId(), style, user);
+            }
+        });
 
         return TripPlanResponseDTO.of(saved.getId(), saved.getTripPlanStatus());
     }
