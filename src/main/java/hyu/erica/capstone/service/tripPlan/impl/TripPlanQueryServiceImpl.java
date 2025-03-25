@@ -52,6 +52,15 @@ public class TripPlanQueryServiceImpl implements TripPlanQueryService {
     }
 
     @Override
+    public TripPlanResultResponseDTO getTripPlanByDay(Long tripPlanId, int day) {
+        TripPlan tripPlan = tripPlanRepository.findById(tripPlanId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus._TRIP_PLAN_NOT_FOUND));
+        List<TripScheduleItem> tripScheduleItems = tripScheduleItemRepository.findAllByTripPlanIdAndDayNumber(tripPlanId, day);
+
+        return TripPlanResultResponseDTO.of(tripPlan, tripScheduleItems);
+    }
+
+    @Override
     public AttractionListResponseDTO getRecommendAttractions(Long tripPlanId) {
         if (!tripPlanRepository.existsById(tripPlanId))
             throw new GeneralException(ErrorStatus._TRIP_PLAN_NOT_FOUND);
