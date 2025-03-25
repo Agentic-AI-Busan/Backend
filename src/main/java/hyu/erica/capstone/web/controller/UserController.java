@@ -89,13 +89,13 @@ public class UserController {
 
 
     // 마이페이지
-    @Operation(summary = "[회원 관련] 토큰 재발급", description = """
-            ### 마이페이지를 조회합니다.
-            """)
-    @GetMapping("/my-page")
-    public ApiResponse<?> myPage() {
-        return ApiResponse.onSuccess(SuccessStatus._OK, SecurityUtils.getCurrentUserId());
-    }
+//    @Operation(summary = "[회원 관련] 토큰 재발급", description = """
+//            ### 마이페이지를 조회합니다.
+//            """)
+//    @GetMapping("/my-page")
+//    public ApiResponse<?> myPage() {
+//        return ApiResponse.onSuccess(SuccessStatus._OK, SecurityUtils.getCurrentUserId());
+//    }
 
 
     // 프로필 수정
