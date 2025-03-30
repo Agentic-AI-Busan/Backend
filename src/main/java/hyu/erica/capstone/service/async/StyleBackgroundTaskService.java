@@ -19,6 +19,8 @@ import hyu.erica.capstone.repository.TripPlanRepository;
 import hyu.erica.capstone.repository.UserRepository;
 import hyu.erica.capstone.web.dto.client.AttractionRequestDTO;
 import hyu.erica.capstone.web.dto.client.RestaurantRequestDTO;
+import hyu.erica.capstone.web.dto.client.StyleRequestDTO;
+import hyu.erica.capstone.web.dto.style.request.UserStyleRequestDTO;
 import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,8 +54,10 @@ public class StyleBackgroundTaskService {
 
 
         try {
-            String prompt = buildPrompt(style);
 
+            StyleRequestDTO prompt = StyleRequestDTO.of(style.getCity().name(), style.getStartDate(),
+                    style.getEndDate(), style.getPreferActivity(), style.getRequirement());
+            
             // 외부 API 병렬 호출
             CompletableFuture<AttractionRequestDTO> attractionFuture =
                     CompletableFuture.supplyAsync(() -> planClient.getAttractions(prompt));
@@ -98,13 +102,4 @@ public class StyleBackgroundTaskService {
         tripPlanRepository.save(tripPlan);
     }
 
-    private String buildPrompt(Style style) {
-        return new StringBuilder()
-                .append("여행 지역 : ").append(style.getCity().name()).append("\n")
-                .append("시작 날짜 : ").append(style.getStartDate()).append("\n")
-                .append("종료 날짜 : ").append(style.getEndDate()).append("\n")
-                .append("선호 활동 : ").append(style.getPreferActivity()).append("\n")
-                .append("추가 요구 사항 : ").append(style.getRequirement())
-                .toString();
-    }
 }
