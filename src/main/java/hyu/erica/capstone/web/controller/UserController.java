@@ -114,4 +114,14 @@ public class UserController {
         return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 
+    // 마이페이지 - 내 여행 계획 조회
+    @Operation(summary = "[회원 관련] 내 여행 계획 조회", description = """
+            ### 내 여행 계획을 조회합니다.
+            """)
+    @GetMapping("/trip-plans")
+    public ApiResponse<?> myTripPlans() {
+        return ApiResponse.onSuccess(SuccessStatus._OK, userCommandService.getMyTripPlans(SecurityUtils.getCurrentUserId()));
+    }
+
+
 }
