@@ -3,6 +3,7 @@ package hyu.erica.capstone.service.user;
 import hyu.erica.capstone.web.dto.user.request.SignInRequestDTO;
 import hyu.erica.capstone.web.dto.user.request.SignUpRequestDTO;
 import hyu.erica.capstone.web.dto.user.request.UpdateInfoRequestDTO;
+import hyu.erica.capstone.web.dto.user.response.MyTripPlanResponse;
 
 public interface UserCommandService {
 
@@ -13,6 +14,8 @@ public interface UserCommandService {
     boolean checkEmail(String email);
 
     void updateInfo(Long userId, UpdateInfoRequestDTO request);
+
+    MyTripPlanResponse getMyTripPlans(Long userId);
 
     void reissueToken(String refreshToken);
 }
