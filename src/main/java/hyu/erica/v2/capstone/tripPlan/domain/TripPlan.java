@@ -1,7 +1,8 @@
 package hyu.erica.v2.capstone.tripPlan.domain;
 
 import hyu.erica.v1.capstone.domain.User;
-import hyu.erica.v1.capstone.domain.enums.TripPlanStatus;
+import hyu.erica.v2.capstone.global.entity.BaseEntity;
+import hyu.erica.v2.capstone.tripPlan.domain.enums.TripPlanStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,7 +17,7 @@ import java.time.LocalDate;
 
 @Table(name = "trip-plan")
 @Entity
-public class TripPlan {
+public class TripPlan extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -57,5 +58,6 @@ public class TripPlan {
         this.startDate = startDate;
         this.endDate = endDate;
         this.user = user;
+        this.tripPlanStatus = TripPlanStatus.PROGRESSING;
     }
 }
