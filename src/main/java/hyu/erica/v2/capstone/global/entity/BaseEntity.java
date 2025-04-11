@@ -1,4 +1,4 @@
-package hyu.erica.v2.global.entity;
+package hyu.erica.v2.capstone.global.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
