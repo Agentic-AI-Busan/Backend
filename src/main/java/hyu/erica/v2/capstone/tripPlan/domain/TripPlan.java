@@ -3,6 +3,7 @@ package hyu.erica.v2.capstone.tripPlan.domain;
 import hyu.erica.v1.capstone.domain.User;
 import hyu.erica.v2.capstone.global.entity.BaseEntity;
 import hyu.erica.v2.capstone.tripPlan.domain.enums.TripPlanStatus;
+import hyu.erica.v2.capstone.tripPlan.exception.InvalidTripPlanDateException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -15,7 +16,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 
-@Table(name = "trip-plan")
+@Table(name = "trip_plan")
 @Entity
 public class TripPlan extends BaseEntity {
 
@@ -43,7 +44,6 @@ public class TripPlan extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @Column(name = "user_id", nullable = false)
     private User user;
 
     protected TripPlan() {
@@ -60,4 +60,11 @@ public class TripPlan extends BaseEntity {
         this.user = user;
         this.tripPlanStatus = TripPlanStatus.PROGRESSING;
     }
+
+    private void validateTripDate(final LocalDate startDate, final LocalDate endDate) {
+        if (endDate.isBefore(startDate)) {
+            throw new InvalidTripPlanDateException();
+        }
+    }
+
 }
