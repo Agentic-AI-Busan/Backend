@@ -1,9 +1,10 @@
 package hyu.erica.v2.capstone.tripPlan.domain;
 
-import hyu.erica.v1.capstone.domain.User;
+
 import hyu.erica.v2.capstone.global.entity.BaseEntity;
 import hyu.erica.v2.capstone.tripPlan.domain.enums.TripPlanStatus;
 import hyu.erica.v2.capstone.tripPlan.exception.InvalidTripPlanDateException;
+import hyu.erica.v2.capstone.user.domain.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -52,6 +53,7 @@ public class TripPlan extends BaseEntity {
 
     public TripPlan(final String title, final String description, final String profileImage,
                     final LocalDate startDate, final LocalDate endDate, final User user) {
+        validateTripDate(startDate, endDate);
         this.title = title;
         this.description = description;
         this.profileImage = profileImage;
