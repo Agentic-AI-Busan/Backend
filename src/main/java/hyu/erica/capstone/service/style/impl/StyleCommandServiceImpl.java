@@ -64,7 +64,8 @@ public class StyleCommandServiceImpl implements StyleCommandService {
         if (!Objects.equals(style.getUser().getId(), userId))
             throw new GeneralException(ErrorStatus._UNAUTHORIZED_USER);
 
-        style.updateStyle(request.startDate(), request.endDate(), request.preferActivity(), request.requirement());
+        style.updateStyle(request.startDate(), request.endDate(), request.preferActivity(),
+                request.preferFood(), request.dislikedFood(), request.requirement());
 
         Style save = styleRepository.save(style);
 
