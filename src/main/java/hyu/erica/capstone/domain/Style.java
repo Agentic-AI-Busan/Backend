@@ -39,16 +39,22 @@ public class Style {
 
     private String preferActivity;
 
+    private String preferFood;
+
+    private String dislikedFood;
+
     private String requirement;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public void updateStyle(LocalDate startDate, LocalDate endDate, String preferActivity, String requirement) {
+    public void updateStyle(LocalDate startDate, LocalDate endDate, String preferActivity, String preferFood, String dislikedFood, String requirement) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.preferActivity = preferActivity;
+        this.preferFood = preferFood;
+        this.dislikedFood = dislikedFood;
         this.requirement = requirement;
     }
 }
