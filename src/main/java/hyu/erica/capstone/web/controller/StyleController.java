@@ -51,6 +51,8 @@ public class StyleController {
             - startDate: 여행 시작 날짜
             - endDate: 여행 종료 날짜
             - preferActivity: 선호하는 활동
+            - preferFood: 선호하는 음식
+            - dislikedFood: 싫어하는 음식
             - requirement: 요구사항
             """)
     @PostMapping("/{styleId}")
