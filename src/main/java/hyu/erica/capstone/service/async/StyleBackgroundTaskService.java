@@ -56,7 +56,8 @@ public class StyleBackgroundTaskService {
         try {
 
             StyleRequestDTO prompt = StyleRequestDTO.of(style.getCity().name(), style.getStartDate(),
-                    style.getEndDate(), style.getPreferActivity(), style.getRequirement());
+                    style.getEndDate(), style.getPreferActivity(), style.getPreferFood(),
+                    style.getDislikedFood(),style.getRequirement());
             
             // 외부 API 병렬 호출
             CompletableFuture<AttractionRequestDTO> attractionFuture =
