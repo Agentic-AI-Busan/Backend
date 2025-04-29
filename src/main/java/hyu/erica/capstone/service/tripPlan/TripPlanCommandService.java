@@ -11,4 +11,8 @@ public interface TripPlanCommandService {
     Long confirmRestaurantRecommendation(Long tripPlanId, SaveRestaurantRequestDTO request);
 
     void updatePlan(UpdateAllScheduleOrderRequest request);
+
+    void editAttractionRecommendation(Long tripPlansId, SaveAttractionRequestDTO request);
+
+    void editRestaurantRecommendation(Long tripPlansId, SaveRestaurantRequestDTO request);
 }
