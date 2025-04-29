@@ -11,4 +11,5 @@ public interface PreferAttractionRepository extends JpaRepository<PreferAttracti
     List<PreferAttraction> findAllByTripPlanId(Long tripPlanId);
     List<PreferAttraction> findByTripPlanIdAndIsPreferTrue(Long tripPlanId);
     boolean existsByAttraction_ContentIdAndUserId(Long attractionId, Long userId);
+    boolean existsByTripPlanIdAndAttractionContentId(Long tripPlanId, Long attractionId);
 }
