@@ -10,4 +10,5 @@ public interface PreferRestaurantRepository extends JpaRepository<PreferRestaura
     List<PreferRestaurant> findAllByTripPlanId(Long tripPlanId);
     List<PreferRestaurant> findByTripPlanIdAndIsPreferTrue(Long tripPlanId);
     boolean existsByRestaurantIdAndUserId(Long restaurantId, Long userId);
+    boolean existsByTripPlanIdAndRestaurantId(Long tripPlanId, Long restaurantId);
 }
