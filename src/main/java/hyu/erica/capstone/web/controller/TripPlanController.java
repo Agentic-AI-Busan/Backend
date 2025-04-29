@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -130,6 +131,40 @@ public class TripPlanController {
             @PathVariable Long restaurantId) {
         // 선택지 상세 보기 (음식점)
         return ApiResponse.onSuccess(SuccessStatus._OK, tripPlanQueryService.getRecommendRestaurantDetail(restaurantId));
+    }
+
+    // 선택지 편집
+    @Tag(name = "선택지 확인", description = "선택지 확인 API")
+    @Operation(summary = "추천 여행지 편집", description = """
+            ### 추천 여행지 편집 API
+            
+            ### Path Variables
+            - tripPlansId: 여행 계획 ID
+                  """)
+    @PutMapping("/{tripPlansId}/attractions/edit")
+    public ApiResponse<?> editPlaces(
+            @PathVariable Long tripPlansId,
+            @RequestBody SaveAttractionRequestDTO request) {
+        // 선택지 편집
+        tripPlanCommandService.editAttractionRecommendation(tripPlansId, request);
+        return ApiResponse.onSuccess(SuccessStatus._OK);
+    }
+
+    // 음식점 편집
+    @Tag(name = "선택지 확인", description = "선택지 확인 API")
+    @Operation(summary = "추천 음식점 편집", description = """
+            ### 추천 음식점 편집 API
+            
+            ### Path Variables
+            - tripPlansId: 여행 계획 ID
+                  """)
+    @PutMapping("/{tripPlansId}/restaurants/edit")
+    public ApiResponse<?> editRestaurants(
+            @PathVariable Long tripPlansId,
+            @RequestBody SaveRestaurantRequestDTO request) {
+        // 음식점 편집
+        tripPlanCommandService.editRestaurantRecommendation(tripPlansId, request);
+        return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 
 
