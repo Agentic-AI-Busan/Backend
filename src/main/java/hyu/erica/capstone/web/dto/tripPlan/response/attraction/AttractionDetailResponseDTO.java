@@ -8,7 +8,7 @@ public record AttractionDetailResponseDTO (Long attractionId, String name, Strin
 
     public static AttractionDetailResponseDTO of(Attraction attraction) {
         return new AttractionDetailResponseDTO(attraction.getContentId(),
-                attraction.getContentName(), attraction.getImageUrl(), attraction.getAddress(),
+                attraction.getTravelDestination(), attraction.getImageUrl(), attraction.getAddress(),
                 attraction.getContact(), attraction.getSubtitle(), attraction.getOperatingHours(),
                 attraction.getLatitude(), attraction.getLongitude());
     }
