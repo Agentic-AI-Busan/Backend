@@ -76,7 +76,7 @@ public class UserController {
     }
 
     // 토큰 재발급
-//    @Operation(summary = "[회원 관련] 토큰 재발급", description = """
+//    @Operation(summary = "[회원 관련] 토큰 재발급", title = """
 //            ### 토큰을 재발급합니다. refresh-token을 이용하여 access-token을 재발급합니다.
 //
 //            ### Request Header
@@ -89,7 +89,7 @@ public class UserController {
 
 
     // 마이페이지
-//    @Operation(summary = "[회원 관련] 토큰 재발급", description = """
+//    @Operation(summary = "[회원 관련] 토큰 재발급", title = """
 //            ### 마이페이지를 조회합니다.
 //            """)
 //    @GetMapping("/my-page")

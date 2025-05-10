@@ -3,7 +3,7 @@ package hyu.erica.capstone.web.dto.tripPlan.response.restaurant;
 import hyu.erica.capstone.domain.Restaurant;
 
 public record RestaurantDetailResponseDTO (
-        Long restaurantId, String name, String imageUrl, String address, String phone, String description, String usageDay,
+        Long restaurantId, String name, String imageUrl, String address, String phone, String title, String operatingHour,
         Double latitude, Double longitude) {
 
     public static RestaurantDetailResponseDTO of(Restaurant restaurant) {
