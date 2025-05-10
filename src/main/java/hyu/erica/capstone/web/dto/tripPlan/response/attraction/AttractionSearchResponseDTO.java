@@ -9,7 +9,7 @@ public record AttractionSearchResponseDTO(List<AttractionSearchDTO> attractions,
 
     private record AttractionSearchDTO (Long attractionId, String title, String imageUrl, String address, String usageDay) {
         private static AttractionSearchDTO of(Attraction attraction) {
-            return new AttractionSearchDTO(attraction.getContentId(), attraction.getTitle(), attraction.getImageUrl(),
+            return new AttractionSearchDTO(attraction.getContentId(), attraction.getTravelDestination(), attraction.getImageUrl(),
                     attraction.getAddress(), attraction.getClosedDays());
         }
     }
