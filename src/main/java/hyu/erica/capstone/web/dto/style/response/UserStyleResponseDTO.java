@@ -5,11 +5,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record UserStyleResponseDTO(String city, LocalDate startDate, LocalDate endDate,
-                                   String preferActivity, String preferFood, String dislikedFood,String requirement) {
+                                   String preferActivity, String preferFood, String dislikedFood,String requirement,
+                                   String ageRange, String numberOfPeople, String transportation) {
 
     public static UserStyleResponseDTO of(Style style) {
         return new UserStyleResponseDTO(style.getCity().name(), style.getStartDate(), style.getEndDate(),
-                                        style.getPreferActivity(), style.getPreferFood(), style.getDislikedFood(), style.getRequirement());
+                style.getPreferActivity(), style.getPreferFood(), style.getDislikedFood(),
+                style.getRequirement(), style.getAgeRange(), style.getNumberOfPeople(), style.getTransportation());
     }
 }
 
