@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,16 +45,28 @@ public class Style {
 
     private String requirement;
 
+    private String ageRange;
+
+    private String numberOfPeople;
+
+    private String transportation;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public void updateStyle(LocalDate startDate, LocalDate endDate, String preferActivity, String preferFood, String dislikedFood, String requirement) {
+    public void updateStyle(
+            LocalDate startDate, LocalDate endDate, String preferActivity,
+            String preferFood, String dislikedFood, String requirement,
+            String ageRange, String numberOfPeople, String transportation) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.preferActivity = preferActivity;
         this.preferFood = preferFood;
         this.dislikedFood = dislikedFood;
         this.requirement = requirement;
+        this.ageRange = ageRange;
+        this.numberOfPeople = numberOfPeople;
+        this.transportation = transportation;
     }
 }

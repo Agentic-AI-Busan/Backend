@@ -7,10 +7,6 @@ import hyu.erica.capstone.domain.TripPlan;
 import hyu.erica.capstone.domain.User;
 import hyu.erica.capstone.domain.enums.City;
 import hyu.erica.capstone.domain.enums.TripPlanStatus;
-import hyu.erica.capstone.repository.AttractionRepository;
-import hyu.erica.capstone.repository.PreferAttractionRepository;
-import hyu.erica.capstone.repository.PreferRestaurantRepository;
-import hyu.erica.capstone.repository.RestaurantRepository;
 import hyu.erica.capstone.repository.StyleRepository;
 import hyu.erica.capstone.repository.TripPlanRepository;
 import hyu.erica.capstone.repository.UserRepository;
@@ -65,7 +61,8 @@ public class StyleCommandServiceImpl implements StyleCommandService {
             throw new GeneralException(ErrorStatus._UNAUTHORIZED_USER);
 
         style.updateStyle(request.startDate(), request.endDate(), request.preferActivity(),
-                request.preferFood(), request.dislikedFood(), request.requirement());
+                request.preferFood(), request.dislikedFood(), request.requirement(),
+                request.ageRange(), request.numberOfPeople(), request.transportation() );
 
         Style save = styleRepository.save(style);
 
