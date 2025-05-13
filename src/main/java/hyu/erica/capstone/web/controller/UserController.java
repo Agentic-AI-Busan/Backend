@@ -4,6 +4,7 @@ import hyu.erica.capstone.api.ApiResponse;
 import hyu.erica.capstone.api.code.status.SuccessStatus;
 import hyu.erica.capstone.security.utils.SecurityUtils;
 import hyu.erica.capstone.service.user.UserCommandService;
+import hyu.erica.capstone.service.user.UserQueryService;
 import hyu.erica.capstone.web.dto.user.request.SignInRequestDTO;
 import hyu.erica.capstone.web.dto.user.request.SignUpRequestDTO;
 import hyu.erica.capstone.web.dto.user.request.UpdateInfoRequestDTO;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserController {
 
+    private final UserQueryService userQueryService;
     private final UserCommandService userCommandService;
 
     // 회원 가입
@@ -114,13 +116,22 @@ public class UserController {
         return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 
+    // 프로필 조회
+    @Operation(summary = "[회원 관련] 프로필 조회", description = """
+            ### 프로필을 조회합니다.
+            """)
+    @GetMapping("/profile")
+    public ApiResponse<?> getProfile() {
+        return ApiResponse.onSuccess(SuccessStatus._OK, userQueryService.getProfile(SecurityUtils.getCurrentUserId()));
+    }
+
     // 마이페이지 - 내 여행 계획 조회
     @Operation(summary = "[회원 관련] 내 여행 계획 조회", description = """
             ### 내 여행 계획을 조회합니다.
             """)
     @GetMapping("/trip-plans")
     public ApiResponse<?> myTripPlans() {
-        return ApiResponse.onSuccess(SuccessStatus._OK, userCommandService.getMyTripPlans(SecurityUtils.getCurrentUserId()));
+        return ApiResponse.onSuccess(SuccessStatus._OK, userQueryService.getMyTripPlans(SecurityUtils.getCurrentUserId()));
     }
 
 
