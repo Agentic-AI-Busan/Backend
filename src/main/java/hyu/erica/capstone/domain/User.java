@@ -65,9 +65,12 @@ public class User extends BaseEntity {
     @Enumerated(value = STRING)
     private PhoneService phoneService;
 
-    public void updateInfo(String nickname, String phoneNumber, String profileImage) {
+    public void updateInfo(String nickname, String phoneNumber, String profileImage,
+            Gender gender, LocalDate birthday ) {
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
         this.profileImage = profileImage;
+        this.gender = gender;
+        this.birthday = birthday;
     }
 }

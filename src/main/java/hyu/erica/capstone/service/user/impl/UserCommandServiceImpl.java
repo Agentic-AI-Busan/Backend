@@ -75,7 +75,7 @@ public class UserCommandServiceImpl implements UserCommandService {
     public void updateInfo(Long userId, UpdateInfoRequestDTO request) {
         User user = userRepository.findById(userId).orElseThrow(() -> new GeneralException(ErrorStatus._USER_NOT_FOUND));
 
-        user.updateInfo(request.nickname(), request.phoneNumber(), request.profileImage());
+        user.updateInfo(request.nickname(), request.phoneNumber(), request.profileImage(), request.gender(), request.birthDay());
     }
 
     @Override
