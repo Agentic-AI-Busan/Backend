@@ -26,6 +26,7 @@ public class WebSecurity {
         http.authorizeHttpRequests((authz) -> authz
                         .requestMatchers(new AntPathRequestMatcher("/api/users/sign-up")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/users/login")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/users/check-email")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api-docs")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/v3/**", "GET")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**", "GET")).permitAll()

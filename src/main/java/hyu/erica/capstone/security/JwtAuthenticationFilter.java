@@ -47,8 +47,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return path.startsWith("/swagger-ui")
                 || path.startsWith("/v3/api-docs")
                 || path.startsWith("/swagger-resources")
-                || path.startsWith("/api/users/login")  // 🔥 로그인 요청 필터 제외
-                || path.startsWith("/api/users/sign-up"); // 🔥 회원가입 요청 필터 제외
+                || path.startsWith("/api/users/login")
+                || path.startsWith("/api/users/sign-up")
+                || path.startsWith("/api/users/check-email");
     }
 
 

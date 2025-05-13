@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "사용자", description = "사용자 관련 API")
@@ -59,7 +60,7 @@ public class UserController {
             - email: 이메일
             """)
     @PostMapping("/check-email")
-    public ApiResponse<?> checkEmail(@RequestBody String email) {
+    public ApiResponse<?> checkEmail(@RequestParam String email) {
         return ApiResponse.onSuccess(SuccessStatus._OK, userCommandService.checkEmail(email));
     }
 
