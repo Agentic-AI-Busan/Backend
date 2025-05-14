@@ -1,5 +1,7 @@
 package hyu.erica.capstone.web.dto.tripPlan.response.restaurant;
 
+import static hyu.erica.capstone.utils.CategoryImageMapper.*;
+
 import hyu.erica.capstone.domain.Restaurant;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +10,7 @@ public record RestaurantSearchResponseDTO(List<RestaurantSearchDTO> restaurants,
 
     private record RestaurantSearchDTO(Long restaurantId, String name, String imageUrl, String address, String usageDay) {
         private static RestaurantSearchDTO of(Restaurant restaurant) {
-            return new RestaurantSearchDTO(restaurant.getId(), restaurant.getRestaurantName(), restaurant.getImageUrl(),
+            return new RestaurantSearchDTO(restaurant.getId(), restaurant.getRestaurantName(), getImageUrl(restaurant.getBusinessStatus()),
                     restaurant.getRoadAddress(), restaurant.getBusinessHours());
         }
     }
