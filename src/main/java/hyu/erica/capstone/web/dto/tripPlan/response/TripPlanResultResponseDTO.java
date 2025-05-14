@@ -1,5 +1,7 @@
 package hyu.erica.capstone.web.dto.tripPlan.response;
 
+import static hyu.erica.capstone.utils.CategoryImageMapper.*;
+
 import hyu.erica.capstone.api.code.status.ErrorStatus;
 import hyu.erica.capstone.api.exception.GeneralException;
 import hyu.erica.capstone.domain.Attraction;
@@ -7,6 +9,7 @@ import hyu.erica.capstone.domain.Restaurant;
 import hyu.erica.capstone.domain.TripPlan;
 import hyu.erica.capstone.domain.TripScheduleItem;
 import hyu.erica.capstone.domain.enums.PlaceType;
+import hyu.erica.capstone.utils.CategoryImageMapper;
 
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -97,7 +100,7 @@ public record TripPlanResultResponseDTO(
                     Restaurant restaurant = tripScheduleItem.getRestaurant();
                     placeId = restaurant.getId();
                     name = restaurant.getRestaurantName();
-                    imageUrl = restaurant.getHomepageUrl(); // 임시 처리
+                    imageUrl = getImageUrl(restaurant.getBusinessStatus()); // 임시 처리
                     latitude = restaurant.getLatitude();
                     longitude = restaurant.getLongitude();
                 }
