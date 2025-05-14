@@ -46,6 +46,8 @@ public class UserCommandServiceImpl implements UserCommandService {
                 .termsOfService(request.termsOfService())
                 .privacyPolicy(request.privacyPolicy())
                 .marketingAgreement(request.marketingAgreement())
+                .gender(request.gender())
+                .profileImage(request.profileImage())
                 .build();
 
         User save = userRepository.save(user);
