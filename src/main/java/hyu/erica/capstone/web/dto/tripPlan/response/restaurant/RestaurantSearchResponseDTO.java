@@ -8,7 +8,7 @@ public record RestaurantSearchResponseDTO(List<RestaurantSearchDTO> restaurants,
 
     private record RestaurantSearchDTO(Long restaurantId, String name, String imageUrl, String address, String usageDay) {
         private static RestaurantSearchDTO of(Restaurant restaurant) {
-            return new RestaurantSearchDTO(restaurant.getId(), restaurant.getRestaurantName(), "추후 작업 예정",
+            return new RestaurantSearchDTO(restaurant.getId(), restaurant.getRestaurantName(), restaurant.getImageUrl(),
                     restaurant.getRoadAddress(), restaurant.getBusinessHours());
         }
     }

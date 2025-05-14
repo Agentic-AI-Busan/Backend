@@ -151,4 +151,7 @@ public class Restaurant {
 
     @Column(name = "NAVER_GRAD")
     private Double naverRating; // 네이버 평점
+
+    @Column(name = "category_image_url")
+    private String imageUrl; // 이미지 URL
 }

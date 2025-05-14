@@ -8,7 +8,7 @@ public record RestaurantDetailResponseDTO (
 
     public static RestaurantDetailResponseDTO of(Restaurant restaurant) {
         return new RestaurantDetailResponseDTO(restaurant.getId(),
-                restaurant.getRestaurantName(), "추후 작업 예정", restaurant.getRoadAddress(),
+                restaurant.getRestaurantName(), restaurant.getHomepageUrl(), restaurant.getRoadAddress(),
                 restaurant.getPhoneNumber(), restaurant.getDescription(), restaurant.getBusinessHours(),
                 restaurant.getLatitude(), restaurant.getLongitude());
     }
