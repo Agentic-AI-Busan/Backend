@@ -8,6 +8,7 @@ import hyu.erica.capstone.domain.Attraction;
 import hyu.erica.capstone.domain.Restaurant;
 import hyu.erica.capstone.domain.TripPlan;
 import hyu.erica.capstone.domain.TripScheduleItem;
+import hyu.erica.capstone.domain.User;
 import hyu.erica.capstone.domain.enums.PlaceType;
 import hyu.erica.capstone.domain.mapping.PreferAttraction;
 import hyu.erica.capstone.domain.mapping.PreferRestaurant;
@@ -17,6 +18,7 @@ import hyu.erica.capstone.repository.PreferRestaurantRepository;
 import hyu.erica.capstone.repository.RestaurantRepository;
 import hyu.erica.capstone.repository.TripPlanRepository;
 import hyu.erica.capstone.repository.TripScheduleItemRepository;
+import hyu.erica.capstone.repository.UserRepository;
 import hyu.erica.capstone.service.tripPlan.TripPlanCommandService;
 import hyu.erica.capstone.web.dto.trip.request.SaveAttractionRequestDTO;
 import hyu.erica.capstone.web.dto.trip.request.SaveRestaurantRequestDTO;
@@ -38,6 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class TripPlanCommandServiceImpl implements TripPlanCommandService {
 
+    private final UserRepository userRepository;
     private final AttractionRepository attractionRepository;
     private final RestaurantRepository restaurantRepository;
 
@@ -47,28 +50,73 @@ public class TripPlanCommandServiceImpl implements TripPlanCommandService {
     private final TripPlanRepository tripPlanRepository;
 
     @Override
-    public Long confirmAttractionRecommendation(Long tripPlanId, SaveAttractionRequestDTO request) {
+    public Long confirmAttractionRecommendation(Long tripPlanId, Long userId, SaveAttractionRequestDTO request) {
+        if (!tripPlanRepository.existsById(tripPlanId)) {
+            throw new GeneralException(ErrorStatus._TRIP_PLAN_NOT_FOUND);
+        }
+
         List<PreferAttraction> preferAttractions = preferAttractionRepository.findAllByTripPlanId(tripPlanId);
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus._USER_NOT_FOUND));
 
         for (PreferAttraction preferAttraction : preferAttractions) {
             if (!request.attractionIds().contains(preferAttraction.getAttraction().getContentId())) {
                 preferAttraction.setPrefer(false);
+            } else {
+                preferAttraction.setPrefer(true);
             }
         }
+
+        // 입력 받은 것 중, 기존 DB에 없는 것들은 새로 추가.
+        for (Long attractionId : request.attractionIds()) {
+            if (!preferAttractionRepository.existsByTripPlanIdAndAttractionContentId(tripPlanId, attractionId)) {
+                PreferAttraction preferAttraction = PreferAttraction.builder()
+                        .tripPlan(tripPlanRepository.getReferenceById(tripPlanId))
+                        .attraction(attractionRepository.getReferenceById(attractionId))
+                        .user(user)
+                        .isPrefer(true)
+                        .build();
+                preferAttractionRepository.save(preferAttraction);
+            }
+        }
+
+        preferAttractionRepository.flush();
 
         return tripPlanId;
     }
 
     @Override
-    public Long confirmRestaurantRecommendation(Long tripPlanId, SaveRestaurantRequestDTO request) {
+    public Long confirmRestaurantRecommendation(Long tripPlanId, Long userId, SaveRestaurantRequestDTO request) {
+        if (!tripPlanRepository.existsById(tripPlanId)) {
+            throw new GeneralException(ErrorStatus._TRIP_PLAN_NOT_FOUND);
+        }
+
         List<PreferRestaurant> preferRestaurants = preferRestaurantRepository.findAllByTripPlanId(tripPlanId);
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus._USER_NOT_FOUND));
 
         for (PreferRestaurant preferRestaurant : preferRestaurants) {
             if (!request.restaurantIds().contains(preferRestaurant.getRestaurant().getId())) {
                 preferRestaurant.setPrefer(false);
+            } else {
+                preferRestaurant.setPrefer(true);
             }
         }
 
+        // 입력 받은 것 중, 기존 DB에 없는 것들은 새로 추가.
+        for (Long restaurantId : request.restaurantIds()) {
+            if (!preferRestaurantRepository.existsByTripPlanIdAndRestaurantId(tripPlanId, restaurantId)) {
+                PreferRestaurant preferRestaurant = PreferRestaurant.builder()
+                        .tripPlan(tripPlanRepository.getReferenceById(tripPlanId))
+                        .restaurant(restaurantRepository.getReferenceById(restaurantId))
+                        .user(user)
+                        .isPrefer(true)
+                        .build();
+                preferRestaurantRepository.save(preferRestaurant);
+            }
+        }
         preferRestaurantRepository.flush();
 
         createTripPlanFinal(tripPlanId);

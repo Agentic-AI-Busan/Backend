@@ -1,7 +1,10 @@
 package hyu.erica.capstone.web.controller;
 
+import static hyu.erica.capstone.security.utils.SecurityUtils.*;
+
 import hyu.erica.capstone.api.ApiResponse;
 import hyu.erica.capstone.api.code.status.SuccessStatus;
+import hyu.erica.capstone.security.utils.SecurityUtils;
 import hyu.erica.capstone.service.tripPlan.TripPlanCommandService;
 import hyu.erica.capstone.service.tripPlan.TripPlanQueryService;
 import hyu.erica.capstone.web.dto.trip.request.AdditionalInfoRequestDTO;
@@ -15,6 +18,8 @@ import hyu.erica.capstone.web.dto.trip.response.TripPeriodResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -98,7 +103,7 @@ public class TripPlanController {
             @PathVariable Long tripPlansId,
             @RequestBody SaveAttractionRequestDTO request) {
         // 여행지 최종 선택
-        return ApiResponse.onSuccess(SuccessStatus._OK, tripPlanCommandService.confirmAttractionRecommendation(tripPlansId, request));
+        return ApiResponse.onSuccess(SuccessStatus._OK, tripPlanCommandService.confirmAttractionRecommendation(tripPlansId, getCurrentUserId(), request));
     }
 
     // 선택지 확인 (음식점)
@@ -133,39 +138,39 @@ public class TripPlanController {
         return ApiResponse.onSuccess(SuccessStatus._OK, tripPlanQueryService.getRecommendRestaurantDetail(restaurantId));
     }
 
-    // 선택지 편집
-    @Tag(name = "선택지 확인", description = "선택지 확인 API")
-    @Operation(summary = "추천 여행지 편집", description = """
-            ### 추천 여행지 편집 API
-            
-            ### Path Variables
-            - tripPlansId: 여행 계획 ID
-                  """)
-    @PutMapping("/{tripPlansId}/attractions/edit")
-    public ApiResponse<?> editPlaces(
-            @PathVariable Long tripPlansId,
-            @RequestBody SaveAttractionRequestDTO request) {
-        // 선택지 편집
-        tripPlanCommandService.editAttractionRecommendation(tripPlansId, request);
-        return ApiResponse.onSuccess(SuccessStatus._OK);
-    }
-
-    // 음식점 편집
-    @Tag(name = "선택지 확인", description = "선택지 확인 API")
-    @Operation(summary = "추천 음식점 편집", description = """
-            ### 추천 음식점 편집 API
-            
-            ### Path Variables
-            - tripPlansId: 여행 계획 ID
-                  """)
-    @PutMapping("/{tripPlansId}/restaurants/edit")
-    public ApiResponse<?> editRestaurants(
-            @PathVariable Long tripPlansId,
-            @RequestBody SaveRestaurantRequestDTO request) {
-        // 음식점 편집
-        tripPlanCommandService.editRestaurantRecommendation(tripPlansId, request);
-        return ApiResponse.onSuccess(SuccessStatus._OK);
-    }
+    // // 선택지 편집
+    // @Tag(name = "선택지 확인", description = "선택지 확인 API")
+    // @Operation(summary = "추천 여행지 편집", description = """
+    //         ### 추천 여행지 편집 API
+    //
+    //         ### Path Variables
+    //         - tripPlansId: 여행 계획 ID
+    //               """)
+    // @PutMapping("/{tripPlansId}/attractions/edit")
+    // public ApiResponse<?> editPlaces(
+    //         @PathVariable Long tripPlansId,
+    //         @RequestBody SaveAttractionRequestDTO request) {
+    //     // 선택지 편집
+    //     tripPlanCommandService.editAttractionRecommendation(tripPlansId, request);
+    //     return ApiResponse.onSuccess(SuccessStatus._OK);
+    // }
+    //
+    // // 음식점 편집
+    // @Tag(name = "선택지 확인", description = "선택지 확인 API")
+    // @Operation(summary = "추천 음식점 편집", description = """
+    //         ### 추천 음식점 편집 API
+    //
+    //         ### Path Variables
+    //         - tripPlansId: 여행 계획 ID
+    //               """)
+    // @PutMapping("/{tripPlansId}/restaurants/edit")
+    // public ApiResponse<?> editRestaurants(
+    //         @PathVariable Long tripPlansId,
+    //         @RequestBody SaveRestaurantRequestDTO request) {
+    //     // 음식점 편집
+    //     tripPlanCommandService.editRestaurantRecommendation(tripPlansId, request);
+    //     return ApiResponse.onSuccess(SuccessStatus._OK);
+    // }
 
 
     // 음식점 키워드 검색
@@ -200,7 +205,7 @@ public class TripPlanController {
             @PathVariable Long tripPlansId,
             @RequestBody SaveRestaurantRequestDTO request) {
         // 음식점 최종 선택
-        return ApiResponse.onSuccess(SuccessStatus._OK, tripPlanCommandService.confirmRestaurantRecommendation(tripPlansId, request));
+        return ApiResponse.onSuccess(SuccessStatus._OK, tripPlanCommandService.confirmRestaurantRecommendation(tripPlansId, getCurrentUserId(), request));
     }
 
 

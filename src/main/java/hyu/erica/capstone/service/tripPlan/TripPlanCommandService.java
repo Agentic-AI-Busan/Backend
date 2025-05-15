@@ -6,9 +6,9 @@ import hyu.erica.capstone.web.dto.tripPlan.request.UpdateAllScheduleOrderRequest
 
 public interface TripPlanCommandService {
 
-    Long confirmAttractionRecommendation(Long tripPlanId, SaveAttractionRequestDTO request);
+    Long confirmAttractionRecommendation(Long tripPlanId, Long userId, SaveAttractionRequestDTO request);
 
-    Long confirmRestaurantRecommendation(Long tripPlanId, SaveRestaurantRequestDTO request);
+    Long confirmRestaurantRecommendation(Long tripPlanId, Long userId, SaveRestaurantRequestDTO request);
 
     void updatePlan(UpdateAllScheduleOrderRequest request);
 
