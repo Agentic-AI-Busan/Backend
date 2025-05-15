@@ -32,9 +32,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -230,6 +233,7 @@ public class TripPlanCommandServiceImpl implements TripPlanCommandService {
                 .stream().map(PreferRestaurant::getRestaurant).collect(Collectors.toList());
 
         int totalDays = (int) DAYS.between(tripPlan.getStartDate(), tripPlan.getEndDate()) + 1;
+        log.info("totalDays: {}", totalDays);
 
         // 섞기
         Collections.shuffle(allAttractions);
@@ -237,7 +241,7 @@ public class TripPlanCommandServiceImpl implements TripPlanCommandService {
 
         // 필요한 개수만큼만 사용 (초과할 경우 대비)
         int maxAttractions = Math.min(totalDays * 2, allAttractions.size());
-        int maxRestaurants = Math.min(totalDays * 2, allRestaurants.size());
+        int maxRestaurants = Math.min(totalDays * 3, allRestaurants.size());
 
         List<Attraction> usableAttractions = allAttractions.subList(0, maxAttractions);
         List<Restaurant> usableRestaurants = allRestaurants.subList(0, maxRestaurants);
@@ -247,15 +251,18 @@ public class TripPlanCommandServiceImpl implements TripPlanCommandService {
         for (int day = 0; day < totalDays; day++) {
             int order = 1;
             int baseIndex = day * 2;
+            int restaurantIndex = day * 3;
 
-            // 각 일자마다 attraction 2개, restaurant 2개가 있어야 함
-            if (baseIndex + 1 < usableAttractions.size() && baseIndex + 1 < usableRestaurants.size()) {
-                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.ATTRACTION, usableAttractions.get(baseIndex)));
-                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.RESTAURANT, usableRestaurants.get(baseIndex)));
-                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.ATTRACTION, usableAttractions.get(baseIndex + 1)));
-                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.RESTAURANT, usableRestaurants.get(baseIndex + 1)));
+            // 각 일자마다 attraction 2개, restaurant 3개가 있어야 함
+            if (baseIndex + 1 < usableAttractions.size() && restaurantIndex + 2 < usableRestaurants.size()) {
+                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.RESTAURANT, usableRestaurants.get(restaurantIndex)));       // 점심
+                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.ATTRACTION, usableAttractions.get(baseIndex)));           // 관광1
+                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.RESTAURANT, usableRestaurants.get(restaurantIndex + 1)));  // 카페/디저트
+                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.ATTRACTION, usableAttractions.get(baseIndex + 1)));       // 관광2
+                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.RESTAURANT, usableRestaurants.get(restaurantIndex + 2)));  // 저녁
             }
         }
+
 
         tripScheduleItemRepository.saveAll(scheduleItems);
     }

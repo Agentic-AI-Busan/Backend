@@ -91,7 +91,7 @@ public record TripPlanResultResponseDTO(
                 case ATTRACTION -> {
                     Attraction attraction = tripScheduleItem.getAttraction();
                     placeId = attraction.getContentId();
-                    name = attraction.getContentName();
+                    name = attraction.getTravelDestination();
                     imageUrl = attraction.getImageUrl();
                     latitude = attraction.getLatitude();
                     longitude = attraction.getLongitude();
