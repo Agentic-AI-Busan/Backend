@@ -13,8 +13,7 @@ public record UpdateAllScheduleOrderRequest(
             int orderInDay,
             PlaceType placeType,
             Long attractionId,
-            Long restaurantId,
-            String memo
+            Long restaurantId
     ) {}
 
 }

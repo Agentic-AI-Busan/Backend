@@ -50,6 +50,7 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // 여행 계획 관련
     _TRIP_PLAN_NOT_FOUND(HttpStatus.NOT_FOUND, "TRIP_PLAN4040", "입력하신 여행 계획을 찾을 수 없습니다."),
+    _TRIP_SCHEDULE_ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "TRIP_PLAN4041", "입력하신 여행 일정 아이템을 찾을 수 없습니다."),
 
     ;
 

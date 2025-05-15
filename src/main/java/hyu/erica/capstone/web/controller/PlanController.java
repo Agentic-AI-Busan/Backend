@@ -7,6 +7,7 @@ import hyu.erica.capstone.service.tripPlan.TripPlanCommandService;
 import hyu.erica.capstone.service.tripPlan.TripPlanQueryService;
 import hyu.erica.capstone.web.dto.tripPlan.request.UpdateAllScheduleOrderRequest;
 import hyu.erica.capstone.web.dto.tripPlan.request.UpdateAllScheduleOrderRequest.ScheduleOrderItemDTO;
+import hyu.erica.capstone.web.dto.tripPlan.request.UpdateMemoRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -114,6 +115,14 @@ public class PlanController {
     @PutMapping("")
     public ApiResponse<?> editPlan(@RequestBody UpdateAllScheduleOrderRequest request) {
         tripPlanCommandService.updatePlan(request);
+        return ApiResponse.onSuccess(SuccessStatus._OK);
+    }
+
+    @PostMapping("/{tripPlanId}/item/{itemId}/memo")
+    public ApiResponse<?> updateMemo(@RequestBody UpdateMemoRequest memo,
+                                     @PathVariable Long tripPlanId,
+                                     @PathVariable Long itemId) {
+        tripPlanCommandService.updateMemo(tripPlanId, itemId, memo);
         return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 
