@@ -62,7 +62,8 @@ public class TripPlanQueryServiceImpl implements TripPlanQueryService {
 
     @Override
     public AttractionListResponseDTO getRecommendAttractions(Long tripPlanId) {
-        if (!tripPlanRepository.existsById(tripPlanId))
+        if (!tripPlanRepository.existsById(tripPlanId) ||
+                preferAttractionRepository.findAllByTripPlanId(tripPlanId).isEmpty())
             throw new GeneralException(ErrorStatus._TRIP_PLAN_NOT_FOUND);
 
         List<PreferAttraction> preferAttractions = preferAttractionRepository.findAllByTripPlanId(tripPlanId);
@@ -90,7 +91,8 @@ public class TripPlanQueryServiceImpl implements TripPlanQueryService {
 
     @Override
     public RestaurantListResponseDTO getRecommendRestaurants(Long tripPlanId) {
-        if (!tripPlanRepository.existsById(tripPlanId))
+        if (!tripPlanRepository.existsById(tripPlanId)  ||
+                preferRestaurantRepository.findAllByTripPlanId(tripPlanId).isEmpty())
             throw new GeneralException(ErrorStatus._TRIP_PLAN_NOT_FOUND);
 
         List<PreferRestaurant> preferRestaurants = preferRestaurantRepository.findAllByTripPlanId(tripPlanId);

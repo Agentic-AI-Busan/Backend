@@ -198,13 +198,14 @@ public class TripPlanCommandServiceImpl implements TripPlanCommandService {
 
         for (int day = 0; day < totalDays; day++) {
             int order = 1;
+            int baseIndex = day * 2;
 
-            // 각 날짜마다 2개씩 할당
-            if (day * 2 + 1 < usableAttractions.size()) {
-                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.ATTRACTION, usableAttractions.get(day * 2)));
-                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.RESTAURANT, usableRestaurants.get(day * 2)));
-                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.ATTRACTION, usableAttractions.get(day * 2 + 1)));
-                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.RESTAURANT, usableRestaurants.get(day * 2 + 1)));
+            // 각 일자마다 attraction 2개, restaurant 2개가 있어야 함
+            if (baseIndex + 1 < usableAttractions.size() && baseIndex + 1 < usableRestaurants.size()) {
+                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.ATTRACTION, usableAttractions.get(baseIndex)));
+                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.RESTAURANT, usableRestaurants.get(baseIndex)));
+                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.ATTRACTION, usableAttractions.get(baseIndex + 1)));
+                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.RESTAURANT, usableRestaurants.get(baseIndex + 1)));
             }
         }
 
