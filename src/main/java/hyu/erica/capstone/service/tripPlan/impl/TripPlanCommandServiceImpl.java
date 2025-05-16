@@ -263,21 +263,10 @@ public class TripPlanCommandServiceImpl implements TripPlanCommandService {
 
         List<TripScheduleItem> scheduleItems = new ArrayList<>();
 
-        // 1차: 모든 날짜에 호텔 일정 추가 (orderInDay = 0)
-        for (int day = 1; day <= totalDays; day++) {
-            TripScheduleItem hotelItem = TripScheduleItem.builder()
-                    .tripPlan(tripPlan)
-                    .dayNumber(day)
-                    .orderInDay(0)
-                    .placeType(PlaceType.HOTEL)
-                    .memo("숙소 위치를 입력하세요")
-                    .build();
-            scheduleItems.add(hotelItem);
-        }
 
         // 2차: 기본 일정 (있을 만큼만 추가, order = 1부터 시작)
         for (int day = 0; day < totalDays; day++) {
-            int order = 1; // 호텔 다음 순서
+            int order = 0; // 호텔 다음 순서
             int attractionIdx = day * baseAttractionsPerDay;
             int restaurantIdx = day * baseRestaurantsPerDay;
 
