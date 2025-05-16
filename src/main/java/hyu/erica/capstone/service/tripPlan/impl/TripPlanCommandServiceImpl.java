@@ -233,6 +233,7 @@ public class TripPlanCommandServiceImpl implements TripPlanCommandService {
 
         tripScheduleItem.updateMemo(memo.memo());
     }
+
     private void createTripPlanFinal(Long tripPlanId) {
         TripPlan tripPlan = tripPlanRepository.findById(tripPlanId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus._TRIP_PLAN_NOT_FOUND));
@@ -248,43 +249,57 @@ public class TripPlanCommandServiceImpl implements TripPlanCommandService {
         Collections.shuffle(allAttractions);
         Collections.shuffle(allRestaurants);
 
-        // 기본 일정: 하루 2개 어트랙션 + 3개 식당
         int baseAttractionsPerDay = 2;
         int baseRestaurantsPerDay = 3;
 
         int requiredAttractions = totalDays * baseAttractionsPerDay;
         int requiredRestaurants = totalDays * baseRestaurantsPerDay;
 
-        // 기본으로 사용할 장소들
         List<Attraction> usableAttractions = allAttractions.subList(0, Math.min(requiredAttractions, allAttractions.size()));
         List<Restaurant> usableRestaurants = allRestaurants.subList(0, Math.min(requiredRestaurants, allRestaurants.size()));
 
-        // 남은 찜 목록 (추가용)
         List<Attraction> extraAttractions = allAttractions.subList(usableAttractions.size(), allAttractions.size());
         List<Restaurant> extraRestaurants = allRestaurants.subList(usableRestaurants.size(), allRestaurants.size());
 
         List<TripScheduleItem> scheduleItems = new ArrayList<>();
 
-        // 1차: 기본 일정
+        // 1차: 모든 날짜에 호텔 일정 추가 (orderInDay = 0)
+        for (int day = 1; day <= totalDays; day++) {
+            TripScheduleItem hotelItem = TripScheduleItem.builder()
+                    .tripPlan(tripPlan)
+                    .dayNumber(day)
+                    .orderInDay(0)
+                    .placeType(PlaceType.HOTEL)
+                    .memo("숙소 위치를 입력하세요")
+                    .build();
+            scheduleItems.add(hotelItem);
+        }
+
+        // 2차: 기본 일정 (있을 만큼만 추가, order = 1부터 시작)
         for (int day = 0; day < totalDays; day++) {
-            int order = 1;
+            int order = 1; // 호텔 다음 순서
             int attractionIdx = day * baseAttractionsPerDay;
             int restaurantIdx = day * baseRestaurantsPerDay;
 
-            if (attractionIdx + 1 < usableAttractions.size() && restaurantIdx + 2 < usableRestaurants.size()) {
-                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.RESTAURANT, usableRestaurants.get(restaurantIdx)));       // 점심
-                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.ATTRACTION, usableAttractions.get(attractionIdx)));       // 관광1
-                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.RESTAURANT, usableRestaurants.get(restaurantIdx + 1)));   // 디저트
-                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.ATTRACTION, usableAttractions.get(attractionIdx + 1)));   // 관광2
-                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.RESTAURANT, usableRestaurants.get(restaurantIdx + 2)));   // 저녁
-            }
+            if (restaurantIdx < usableRestaurants.size())
+                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.RESTAURANT, usableRestaurants.get(restaurantIdx)));
+
+            if (attractionIdx < usableAttractions.size())
+                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.ATTRACTION, usableAttractions.get(attractionIdx)));
+
+            if (restaurantIdx + 1 < usableRestaurants.size())
+                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.RESTAURANT, usableRestaurants.get(restaurantIdx + 1)));
+
+            if (attractionIdx + 1 < usableAttractions.size())
+                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.ATTRACTION, usableAttractions.get(attractionIdx + 1)));
+
+            if (restaurantIdx + 2 < usableRestaurants.size())
+                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.RESTAURANT, usableRestaurants.get(restaurantIdx + 2)));
         }
 
-        // 2차: 남은 찜 장소 추가 (하루씩 순환하며 배정)
-        int[] dayOrder = new int[totalDays]; // 각 날짜별 마지막 order 기억
-
-        for (int i = 0; i < scheduleItems.size(); i++) {
-            TripScheduleItem item = scheduleItems.get(i);
+        // 3차: 남은 찜 장소 하루씩 순환 배정
+        int[] dayOrder = new int[totalDays];
+        for (TripScheduleItem item : scheduleItems) {
             int day = item.getDayNumber() - 1;
             dayOrder[day] = Math.max(dayOrder[day], item.getOrderInDay());
         }
@@ -305,7 +320,6 @@ public class TripPlanCommandServiceImpl implements TripPlanCommandService {
 
         tripScheduleItemRepository.saveAll(scheduleItems);
     }
-
 
     private TripScheduleItem createScheduleItem(TripPlan tripPlan, int day, int order, PlaceType type, Object place) {
         TripScheduleItem.TripScheduleItemBuilder builder = TripScheduleItem.builder()

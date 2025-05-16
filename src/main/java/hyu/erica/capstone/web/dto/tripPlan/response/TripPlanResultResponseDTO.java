@@ -1,6 +1,7 @@
 package hyu.erica.capstone.web.dto.tripPlan.response;
 
 import static hyu.erica.capstone.utils.CategoryImageMapper.*;
+import static java.time.temporal.ChronoUnit.*;
 
 import hyu.erica.capstone.api.code.status.ErrorStatus;
 import hyu.erica.capstone.api.exception.GeneralException;
@@ -12,6 +13,7 @@ import hyu.erica.capstone.domain.enums.PlaceType;
 import hyu.erica.capstone.utils.CategoryImageMapper;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -27,23 +29,23 @@ public record TripPlanResultResponseDTO(
 ) {
 
     public static TripPlanResultResponseDTO of(TripPlan tripPlan, List<TripScheduleItem> scheduleItems) {
-        // 일자별로 그룹화 (dayNumber 기준)
+        // 그룹화: dayNumber 기준
         Map<Integer, List<TripScheduleItem>> groupedByDay = scheduleItems.stream()
                 .collect(Collectors.groupingBy(TripScheduleItem::getDayNumber));
 
-        List<TripPlanDayDTO> days = groupedByDay.entrySet().stream()
-                .map(entry -> {
-                    int dayNumber = entry.getKey();
-                    List<TripScheduleItem> items = entry.getValue().stream()
-                            .sorted(Comparator.comparingInt(TripScheduleItem::getOrderInDay)) // 정렬
-                            .toList();
+        int totalDays = (int) DAYS.between(tripPlan.getStartDate(), tripPlan.getEndDate()) + 1;
 
-                    // startDate + (dayNumber - 1)로 실제 날짜 계산
-                    LocalDate date = tripPlan.getStartDate().plusDays(dayNumber - 1);
-                    return TripPlanDayDTO.of(dayNumber, date, items);
-                })
-                .sorted(Comparator.comparingInt(TripPlanDayDTO::dayNumber)) // day 순으로 정렬
-                .toList();
+        List<TripPlanDayDTO> days = new ArrayList<>();
+
+        for (int day = 1; day <= totalDays; day++) {
+            LocalDate date = tripPlan.getStartDate().plusDays(day - 1);
+            List<TripScheduleItem> items = groupedByDay.getOrDefault(day, List.of())
+                    .stream()
+                    .sorted(Comparator.comparingInt(TripScheduleItem::getOrderInDay))
+                    .toList();
+
+            days.add(TripPlanDayDTO.of(day, date, items));
+        }
 
         return new TripPlanResultResponseDTO(
                 tripPlan.getTitle(),
