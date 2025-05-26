@@ -29,7 +29,7 @@ public record MyTripPlanResponse (List<TripDetail> tripPlans, int totalElements)
                 String imageUrl, String memo, String city) {
 
             // dayDiff 오늘부터 여행 종료일 까지의 일수
-            int dayDiff = (int) (LocalDate.now().toEpochDay() - endDate.toEpochDay());
+            int dayDiff = (int) (LocalDate.now().toEpochDay() - startDate.toEpochDay());
 
             return new TripDetail(tripPlanId, tripPlanName, tripPlanStatus, startDate, endDate, dayDiff ,imageUrl, memo, city);
         }
