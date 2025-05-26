@@ -11,6 +11,7 @@ import hyu.erica.capstone.service.user.UserCommandService;
 import hyu.erica.capstone.web.dto.user.request.SignInRequestDTO;
 import hyu.erica.capstone.web.dto.user.request.SignUpRequestDTO;
 import hyu.erica.capstone.web.dto.user.request.UpdateInfoRequestDTO;
+import hyu.erica.capstone.web.dto.user.request.UpdateTripPlanRequestDTO;
 import hyu.erica.capstone.web.dto.user.response.MyTripPlanResponse;
 import java.util.List;
 import java.util.Objects;
@@ -93,5 +94,13 @@ public class UserCommandServiceImpl implements UserCommandService {
     @Override
     public void reissueToken(String refreshToken) {
 
+    }
+
+    @Override
+    public void updateTripPlan(Long tripPlanId, UpdateTripPlanRequestDTO request) {
+        TripPlan tripPlan = tripPlanRepository.findById(tripPlanId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus._TRIP_PLAN_NOT_FOUND));
+
+        tripPlan.updateDetails(request.title(), request.memo());
     }
 }

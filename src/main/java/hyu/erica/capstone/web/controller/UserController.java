@@ -8,6 +8,7 @@ import hyu.erica.capstone.service.user.UserQueryService;
 import hyu.erica.capstone.web.dto.user.request.SignInRequestDTO;
 import hyu.erica.capstone.web.dto.user.request.SignUpRequestDTO;
 import hyu.erica.capstone.web.dto.user.request.UpdateInfoRequestDTO;
+import hyu.erica.capstone.web.dto.user.request.UpdateTripPlanRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
@@ -134,6 +135,23 @@ public class UserController {
     public ApiResponse<?> myTripPlans() {
         return ApiResponse.onSuccess(SuccessStatus._OK, userQueryService.getMyTripPlans(SecurityUtils.getCurrentUserId()));
     }
+
+    // 마이페이지 - 내 여행 계획 제목, 메모 수정
+    @Operation(summary = "[회원 관련] 내 여행 계획 제목, 메모 수정", description = """
+            ### 내 여행 계획의 제목과 메모를 수정합니다.
+            
+            ### Request Body
+            - title: 제목
+            - memo: 메모
+            """)
+    @PostMapping("/trip-plans/{tripPlanId}/edit")
+    public ApiResponse<?> editTripPlan(
+            @PathVariable Long tripPlanId,
+            @RequestBody UpdateTripPlanRequestDTO request) {
+        userCommandService.updateTripPlan(tripPlanId, request);
+        return ApiResponse.onSuccess(SuccessStatus._OK);
+    }
+
 
 
 }

@@ -70,5 +70,9 @@ public class TripPlan {
         this.tripPlanStatus = status;
     }
 
+    public void updateDetails(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
 
 }
