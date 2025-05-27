@@ -103,4 +103,12 @@ public class UserCommandServiceImpl implements UserCommandService {
 
         tripPlan.updateDetails(request.title(), request.memo());
     }
+
+    @Override
+    public void deleteTripPlan(Long tripPlanId) {
+        TripPlan tripPlan = tripPlanRepository.findById(tripPlanId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus._TRIP_PLAN_NOT_FOUND));
+
+        tripPlanRepository.delete(tripPlan);
+    }
 }

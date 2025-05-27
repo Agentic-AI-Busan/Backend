@@ -21,4 +21,6 @@ public interface UserCommandService {
     void reissueToken(String refreshToken);
 
     void updateTripPlan(Long tripPlanId, UpdateTripPlanRequestDTO request);
+
+    void deleteTripPlan(Long tripPlanId);
 }
