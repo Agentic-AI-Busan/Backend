@@ -6,6 +6,7 @@ import hyu.erica.capstone.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -27,6 +28,7 @@ public class WebSecurity {
                         .requestMatchers(new AntPathRequestMatcher("/api/users/sign-up")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/users/login")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/users/check-email")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/trip-plans/popular")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api-docs")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/v3/**", "GET")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**", "GET")).permitAll()
