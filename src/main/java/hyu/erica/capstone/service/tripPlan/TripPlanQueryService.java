@@ -33,4 +33,7 @@ public interface TripPlanQueryService {
 
     // 추천 식당 키워드 검색
     RestaurantSearchResponseDTO searchRecommendRestaurant(String keyword);
+
+    // 여행지 20개 응답
+    AttractionListResponseDTO getPopularAttractions();
 }

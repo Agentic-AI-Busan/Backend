@@ -117,4 +117,10 @@ public class TripPlanQueryServiceImpl implements TripPlanQueryService {
         List<Restaurant> restaurants = restaurantRepository.findByRestaurantNameContaining(keyword);
         return RestaurantSearchResponseDTO.of(restaurants);
     }
+
+    @Override
+    public AttractionListResponseDTO getPopularAttractions() {
+        List<Attraction> attractions = attractionRepository.findRandom20();
+        return AttractionListResponseDTO.of(attractions);
+    }
 }

@@ -15,6 +15,7 @@ import hyu.erica.capstone.web.dto.trip.request.TripPeriodRequestDTO;
 import hyu.erica.capstone.web.dto.trip.response.AdditionalInfoResponseDTO;
 import hyu.erica.capstone.web.dto.trip.response.PreferActivitiesResponseDTO;
 import hyu.erica.capstone.web.dto.trip.response.TripPeriodResponseDTO;
+import hyu.erica.capstone.web.dto.tripPlan.response.attraction.AttractionListResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,10 @@ public class TripPlanController {
     private final TripPlanQueryService tripPlanQueryService;
     private final TripPlanCommandService tripPlanCommandService;
 
+    @GetMapping("/popular")
+    public ApiResponse<AttractionListResponseDTO> get20Attractions() {
+        return ApiResponse.onSuccess(SuccessStatus._OK, tripPlanQueryService.getPopularAttractions());
+    }
 
     // 선택지 확인 (여행지)
     @Tag(name = "선택지 확인", description = "선택지 확인 API")
