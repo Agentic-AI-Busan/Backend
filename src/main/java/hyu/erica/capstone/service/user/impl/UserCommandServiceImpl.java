@@ -5,6 +5,7 @@ import hyu.erica.capstone.api.exception.GeneralException;
 import hyu.erica.capstone.domain.TripPlan;
 import hyu.erica.capstone.domain.User;
 import hyu.erica.capstone.repository.TripPlanRepository;
+import hyu.erica.capstone.repository.TripScheduleItemRepository;
 import hyu.erica.capstone.repository.UserRepository;
 import hyu.erica.capstone.security.JwtTokenProvider;
 import hyu.erica.capstone.service.user.UserCommandService;
@@ -28,6 +29,7 @@ public class UserCommandServiceImpl implements UserCommandService {
 
     private final UserRepository userRepository;
     private final TripPlanRepository tripPlanRepository;
+    private final TripScheduleItemRepository tripScheduleItemRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
 
@@ -106,6 +108,8 @@ public class UserCommandServiceImpl implements UserCommandService {
 
     @Override
     public void deleteTripPlan(Long tripPlanId) {
+        tripScheduleItemRepository.deleteAllByTripPlanId(tripPlanId);
+
         TripPlan tripPlan = tripPlanRepository.findById(tripPlanId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus._TRIP_PLAN_NOT_FOUND));
 

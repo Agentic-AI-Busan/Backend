@@ -10,4 +10,6 @@ public interface TripScheduleItemRepository extends JpaRepository<TripScheduleIt
     List<TripScheduleItem> findAllByTripPlanId(Long tripPlanId);
 
     List<TripScheduleItem> findAllByTripPlanIdAndDayNumber(Long tripPlanId, int dayNumber);
+
+    void deleteAllByTripPlanId(Long tripPlanId);
 }
