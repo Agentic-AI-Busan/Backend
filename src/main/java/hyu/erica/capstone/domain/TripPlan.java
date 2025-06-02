@@ -75,4 +75,8 @@ public class TripPlan {
         this.description = description;
     }
 
+    public void updateTitle(String title) {
+        this.title = title;
+    }
+
 }

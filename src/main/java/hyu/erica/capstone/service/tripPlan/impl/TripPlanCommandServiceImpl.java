@@ -234,6 +234,14 @@ public class TripPlanCommandServiceImpl implements TripPlanCommandService {
         tripScheduleItem.updateMemo(memo.memo());
     }
 
+    @Override
+    public void updateTitle(Long tripPlanId, String title) {
+        TripPlan tripPlan = tripPlanRepository.findById(tripPlanId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus._TRIP_PLAN_NOT_FOUND));
+
+        tripPlan.updateTitle(title);
+    }
+
     private void createTripPlanFinal(Long tripPlanId) {
         TripPlan tripPlan = tripPlanRepository.findById(tripPlanId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus._TRIP_PLAN_NOT_FOUND));

@@ -126,6 +126,23 @@ public class PlanController {
         return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 
+    @Operation(summary = "여행 계획 제목 수정", description = """
+            ### 여행 계획 제목 수정 API
+            여행 계획의 제목을 수정합니다.
+            
+            ### Path Variables
+            - tripPlanId: 여행 계획 ID
+            
+            ### Request Body
+            - title: 새로운 제목
+                  """)
+    @PutMapping("/{tripPlanId}/title")
+    public ApiResponse<?> updateTitle(@PathVariable Long tripPlanId,
+                                      @RequestParam String title) {
+        tripPlanCommandService.updateTitle(tripPlanId, title);
+        return ApiResponse.onSuccess(SuccessStatus._OK);
+    }
+
 
 //
 //    // 채팅 입력 -> AI API 호출

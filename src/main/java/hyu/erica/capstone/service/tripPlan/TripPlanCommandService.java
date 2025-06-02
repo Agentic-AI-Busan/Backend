@@ -19,4 +19,6 @@ public interface TripPlanCommandService {
 
     void updateMemo(Long tripPlanId, Long itemId, UpdateMemoRequest memo);
 
+    void updateTitle(Long tripPlanId, String title);
+
 }
