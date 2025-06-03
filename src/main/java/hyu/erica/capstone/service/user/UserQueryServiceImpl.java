@@ -1,5 +1,6 @@
 package hyu.erica.capstone.service.user;
 
+import hyu.erica.capstone.domain.enums.TripPlanStatus;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class UserQueryServiceImpl implements UserQueryService {
 
 	@Override
 	public MyTripPlanResponse getMyTripPlans(Long userId) {
-		List<TripPlan> allByUserId = tripPlanRepository.findAllByUser_Id(userId);
+		List<TripPlan> allByUserId = tripPlanRepository.findAllByUser_IdAndTripPlanStatus(userId, TripPlanStatus.DONE);
 		return MyTripPlanResponse.of(allByUserId);
 	}
 
