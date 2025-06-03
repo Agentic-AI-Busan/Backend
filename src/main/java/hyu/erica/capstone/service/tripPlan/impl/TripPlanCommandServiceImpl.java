@@ -25,7 +25,7 @@ import hyu.erica.capstone.web.dto.trip.request.SaveRestaurantRequestDTO;
 import hyu.erica.capstone.web.dto.tripPlan.request.UpdateAllScheduleOrderRequest;
 import hyu.erica.capstone.web.dto.tripPlan.request.UpdateAllScheduleOrderRequest.ScheduleOrderItemDTO;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -254,27 +254,19 @@ public class TripPlanCommandServiceImpl implements TripPlanCommandService {
 
         int totalDays = (int) DAYS.between(tripPlan.getStartDate(), tripPlan.getEndDate()) + 1;
 
-        Collections.shuffle(allAttractions);
-        Collections.shuffle(allRestaurants);
-
-        int baseAttractionsPerDay = 2;
-        int baseRestaurantsPerDay = 3;
-
-        int requiredAttractions = totalDays * baseAttractionsPerDay;
-        int requiredRestaurants = totalDays * baseRestaurantsPerDay;
-
-        List<Attraction> usableAttractions = allAttractions.subList(0, Math.min(requiredAttractions, allAttractions.size()));
-        List<Restaurant> usableRestaurants = allRestaurants.subList(0, Math.min(requiredRestaurants, allRestaurants.size()));
+        List<Attraction> usableAttractions = sortAttractionByDistance(allAttractions).subList(0, Math.min(totalDays * 2, allAttractions.size()));
+        List<Restaurant> usableRestaurants = sortRestaurantByDistance(allRestaurants).subList(0, Math.min(totalDays * 3, allRestaurants.size()));
 
         List<Attraction> extraAttractions = allAttractions.subList(usableAttractions.size(), allAttractions.size());
         List<Restaurant> extraRestaurants = allRestaurants.subList(usableRestaurants.size(), allRestaurants.size());
 
         List<TripScheduleItem> scheduleItems = new ArrayList<>();
 
+        int baseAttractionsPerDay = 2;
+        int baseRestaurantsPerDay = 3;
 
-        // 2차: 기본 일정 (있을 만큼만 추가, order = 1부터 시작)
         for (int day = 0; day < totalDays; day++) {
-            int order = 0; // 호텔 다음 순서
+            int order = 0;
             int attractionIdx = day * baseAttractionsPerDay;
             int restaurantIdx = day * baseRestaurantsPerDay;
 
@@ -294,7 +286,6 @@ public class TripPlanCommandServiceImpl implements TripPlanCommandService {
                 scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.RESTAURANT, usableRestaurants.get(restaurantIdx + 2)));
         }
 
-        // 3차: 남은 찜 장소 하루씩 순환 배정
         int[] dayOrder = new int[totalDays];
         for (TripScheduleItem item : scheduleItems) {
             int day = item.getDayNumber() - 1;
@@ -318,6 +309,35 @@ public class TripPlanCommandServiceImpl implements TripPlanCommandService {
         tripScheduleItemRepository.saveAll(scheduleItems);
     }
 
+    private List<Attraction> sortAttractionByDistance(List<Attraction> places) {
+        if (places.isEmpty()) return places;
+        Attraction base = places.get(0);
+        return places.stream()
+                .sorted(Comparator.comparingDouble(a ->
+                        haversine(base.getLatitude(), base.getLongitude(), a.getLatitude(), a.getLongitude())))
+                .collect(Collectors.toList());
+    }
+
+    private List<Restaurant> sortRestaurantByDistance(List<Restaurant> places) {
+        if (places.isEmpty()) return places;
+        Restaurant base = places.get(0);
+        return places.stream()
+                .sorted(Comparator.comparingDouble(r ->
+                        haversine(base.getLatitude(), base.getLongitude(), r.getLatitude(), r.getLongitude())))
+                .collect(Collectors.toList());
+    }
+
+    private double haversine(double lat1, double lon1, double lat2, double lon2) {
+        double R = 6371;
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+    }
+
     private TripScheduleItem createScheduleItem(TripPlan tripPlan, int day, int order, PlaceType type, Object place) {
         TripScheduleItem.TripScheduleItemBuilder builder = TripScheduleItem.builder()
                 .tripPlan(tripPlan)
@@ -333,6 +353,7 @@ public class TripPlanCommandServiceImpl implements TripPlanCommandService {
 
         return builder.build();
     }
+
 
 
 //    private double distance(double lat1, double lon1, double lat2, double lon2) {
