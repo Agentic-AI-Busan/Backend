@@ -254,90 +254,50 @@ public class TripPlanCommandServiceImpl implements TripPlanCommandService {
 
         int totalDays = (int) DAYS.between(tripPlan.getStartDate(), tripPlan.getEndDate()) + 1;
 
-        List<Attraction> usableAttractions = sortAttractionByDistance(allAttractions).subList(0, Math.min(totalDays * 2, allAttractions.size()));
-        List<Restaurant> usableRestaurants = sortRestaurantByDistance(allRestaurants).subList(0, Math.min(totalDays * 3, allRestaurants.size()));
-
-        List<Attraction> extraAttractions = allAttractions.subList(usableAttractions.size(), allAttractions.size());
-        List<Restaurant> extraRestaurants = allRestaurants.subList(usableRestaurants.size(), allRestaurants.size());
-
         List<TripScheduleItem> scheduleItems = new ArrayList<>();
 
-        int baseAttractionsPerDay = 2;
-        int baseRestaurantsPerDay = 3;
-
         for (int day = 0; day < totalDays; day++) {
+            if (allAttractions.size() < 2 || allRestaurants.size() < 3) break;
+
+            // 관광지 1개 선택 후 가장 가까운 1개 추가
+            Attraction baseAttraction = allAttractions.remove(0);
+            Attraction nearestAttraction = allAttractions.stream()
+                    .min(Comparator.comparingDouble(a -> distance(
+                            baseAttraction.getLatitude(), baseAttraction.getLongitude(),
+                            a.getLatitude(), a.getLongitude())))
+                    .orElse(null);
+            allAttractions.remove(nearestAttraction);
+
+            // 맛집 1개 선택 후 가장 가까운 2개 추가
+            Restaurant baseRestaurant = allRestaurants.remove(0);
+            List<Restaurant> closeRestaurants = allRestaurants.stream()
+                    .sorted(Comparator.comparingDouble(r -> distance(
+                            baseRestaurant.getLatitude(), baseRestaurant.getLongitude(),
+                            r.getLatitude(), r.getLongitude())))
+                    .limit(2).collect(Collectors.toList());
+            allRestaurants.removeAll(closeRestaurants);
+
             int order = 0;
-            int attractionIdx = day * baseAttractionsPerDay;
-            int restaurantIdx = day * baseRestaurantsPerDay;
-
-            if (restaurantIdx < usableRestaurants.size())
-                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.RESTAURANT, usableRestaurants.get(restaurantIdx)));
-
-            if (attractionIdx < usableAttractions.size())
-                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.ATTRACTION, usableAttractions.get(attractionIdx)));
-
-            if (restaurantIdx + 1 < usableRestaurants.size())
-                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.RESTAURANT, usableRestaurants.get(restaurantIdx + 1)));
-
-            if (attractionIdx + 1 < usableAttractions.size())
-                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.ATTRACTION, usableAttractions.get(attractionIdx + 1)));
-
-            if (restaurantIdx + 2 < usableRestaurants.size())
-                scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.RESTAURANT, usableRestaurants.get(restaurantIdx + 2)));
-        }
-
-        int[] dayOrder = new int[totalDays];
-        for (TripScheduleItem item : scheduleItems) {
-            int day = item.getDayNumber() - 1;
-            dayOrder[day] = Math.max(dayOrder[day], item.getOrderInDay());
-        }
-
-        int dayIdx = 0;
-        for (Attraction attraction : extraAttractions) {
-            if (dayIdx >= totalDays) dayIdx = 0;
-            scheduleItems.add(createScheduleItem(tripPlan, dayIdx + 1, ++dayOrder[dayIdx], PlaceType.ATTRACTION, attraction));
-            dayIdx++;
-        }
-
-        dayIdx = 0;
-        for (Restaurant restaurant : extraRestaurants) {
-            if (dayIdx >= totalDays) dayIdx = 0;
-            scheduleItems.add(createScheduleItem(tripPlan, dayIdx + 1, ++dayOrder[dayIdx], PlaceType.RESTAURANT, restaurant));
-            dayIdx++;
+            scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.RESTAURANT, baseRestaurant));
+            scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.ATTRACTION, baseAttraction));
+            scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.RESTAURANT, closeRestaurants.get(0)));
+            scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.ATTRACTION, nearestAttraction));
+            scheduleItems.add(createScheduleItem(tripPlan, day + 1, order++, PlaceType.RESTAURANT, closeRestaurants.get(1)));
         }
 
         tripScheduleItemRepository.saveAll(scheduleItems);
     }
 
-    private List<Attraction> sortAttractionByDistance(List<Attraction> places) {
-        if (places.isEmpty()) return places;
-        Attraction base = places.get(0);
-        return places.stream()
-                .sorted(Comparator.comparingDouble(a ->
-                        haversine(base.getLatitude(), base.getLongitude(), a.getLatitude(), a.getLongitude())))
-                .collect(Collectors.toList());
-    }
-
-    private List<Restaurant> sortRestaurantByDistance(List<Restaurant> places) {
-        if (places.isEmpty()) return places;
-        Restaurant base = places.get(0);
-        return places.stream()
-                .sorted(Comparator.comparingDouble(r ->
-                        haversine(base.getLatitude(), base.getLongitude(), r.getLatitude(), r.getLongitude())))
-                .collect(Collectors.toList());
-    }
-
-    private double haversine(double lat1, double lon1, double lat2, double lon2) {
-        double R = 6371;
+    private double distance(double lat1, double lon1, double lat2, double lon2) {
+        double R = 6371; // Earth radius in km
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-                * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c;
     }
-
     private TripScheduleItem createScheduleItem(TripPlan tripPlan, int day, int order, PlaceType type, Object place) {
         TripScheduleItem.TripScheduleItemBuilder builder = TripScheduleItem.builder()
                 .tripPlan(tripPlan)
