@@ -10,7 +10,7 @@ public record StyleRequestDTO (String city, LocalDate startDate, LocalDate endDa
             String preferActivity, String requirement, String preferFood, String dislikedFood,
             String ageRange, String numberOfPeople, String transportation) {
         return new StyleRequestDTO(city, startDate, endDate, preferActivity,
-                preferFood, dislikedFood, requirement,
+                preferFood, requirement, dislikedFood,
                 ageRange, numberOfPeople, transportation);
     }
 }
