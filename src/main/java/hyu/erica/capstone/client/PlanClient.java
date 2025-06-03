@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "planApiClient", url = "${plan.api.url}")
 public interface PlanClient {
 
-    @PostMapping("/restaurants/search")
+    @PostMapping("/restaurant_graph_rag/search")
     RestaurantRequestDTO getRestaurants(@RequestBody StyleRequestDTO request);
 
-    @PostMapping("/attraction/search")
+    @PostMapping("/attraction_graph_rag/search")
     AttractionRequestDTO getAttractions(@RequestBody StyleRequestDTO request);
 }
